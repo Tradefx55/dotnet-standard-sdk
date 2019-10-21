@@ -160,10 +160,10 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
             var result = service.GetCollection(
-                collectionId: "collectionId"
+                collectionId: collectionId
                 );
-
 
             request.Received().WithArgument("version", "versionDate");
             client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
@@ -180,10 +180,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var description = "description";
             var result = service.UpdateCollection(
-                collectionId: "collectionId",
+                collectionId: collectionId,
                 name: "name",
-                description: "description"
+                description: description
                 );
 
 
@@ -202,8 +204,9 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
             var result = service.DeleteCollection(
-                collectionId: "collectionId"
+                collectionId: collectionId
                 );
 
 
@@ -222,11 +225,13 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var trainingData = "trainingData";
             var result = service.AddImages(
-                collectionId: "collectionId",
+                collectionId: collectionId,
                 imagesFile: new List<FileWithMetadata>() { new FileWithMetadata() },
                 imageUrl: new List<string>() { "imageUrl0", "imageUrl1" },
-                trainingData: "trainingData"
+                trainingData: trainingData
                 );
 
 
@@ -245,8 +250,9 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
             var result = service.ListImages(
-                collectionId: "collectionId"
+                collectionId: collectionId
                 );
 
 
@@ -265,9 +271,11 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var imageId = "imageId";
             var result = service.GetImageDetails(
-                collectionId: "collectionId",
-                imageId: "imageId"
+                collectionId: collectionId,
+                imageId: imageId
                 );
 
 
@@ -286,9 +294,11 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var imageId = "imageId";
             var result = service.DeleteImage(
-                collectionId: "collectionId",
-                imageId: "imageId"
+                collectionId: collectionId,
+                imageId: imageId
                 );
 
 
@@ -307,9 +317,11 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var imageId = "imageId";
             var result = service.GetJpegImage(
-                collectionId: "collectionId",
-                imageId: "imageId",
+                collectionId: collectionId,
+                imageId: imageId,
                 size: "size"
                 );
 
@@ -329,8 +341,9 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
             var result = service.Train(
-                collectionId: "collectionId"
+                collectionId: collectionId
                 );
 
 
@@ -349,9 +362,11 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             service.VersionDate = "versionDate";
 
+            var collectionId = "collectionId";
+            var imageId = "imageId";
             var result = service.AddImageTrainingData(
-                collectionId: "collectionId",
-                imageId: "imageId",
+                collectionId: collectionId,
+                imageId: imageId,
                 objects: new List<TrainingDataObject>() { new TrainingDataObject() }
                 );
 
