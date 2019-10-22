@@ -23,7 +23,13 @@ using IBM.Cloud.SDK.Core.Http;
 using IBM.Cloud.SDK.Core.Authentication.NoAuth;
 using IBM.Watson.VisualRecognition.v4.Model;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using IBM.Cloud.SDK.Core.Http.Exceptions;
 using IBM.Cloud.SDK.Core.Model;
+using System.Net;
 
 namespace IBM.Watson.VisualRecognition.v4.UnitTests
 {
@@ -93,12 +99,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
-            var collectionIds = new List<string>() { "collectionIds0", "collectionIds1" };
-            var features = new List<string>() { "features0", "features1" };
-            var imageUrl = new List<string>() { "imageUrl0", "imageUrl1" };
-            var threshold = 0.5f;
-            var imagesFile = Model.FileWithMetadata;
 
+            var collectionIds = new List<string>(){ "collectionIds0", "collectionIds1" };
+            var features = new List<string>(){ "features0", "features1" };
+            var imagesFile = Model.FileWithMetadata;
+            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
+            var threshold = 0.5f;
             var result = service.Analyze(
                 collectionIds: collectionIds,
                 features: features,
@@ -106,7 +112,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 imageUrl: imageUrl,
                 threshold: threshold
                 );
-
 
             request.Received().WithArgument("version", versionDate);
         }
@@ -123,11 +128,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var name = "name";
+            var description = "description";
             var result = service.CreateCollection(
-                name: "name",
-                description: "description"
+                name: name,
+                description: description
                 );
-
 
             request.Received().WithArgument("version", versionDate);
         }
@@ -146,7 +152,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
 
             var result = service.ListCollections(
                 );
-
 
             request.Received().WithArgument("version", versionDate);
         }
@@ -168,7 +173,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 collectionId: collectionId
                 );
 
-
             request.Received().WithArgument("version", versionDate);
             client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
         }
@@ -186,12 +190,13 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             service.VersionDate = versionDate;
 
             var collectionId = "collectionId";
+            var name = "name";
+            var description = "description";
             var result = service.UpdateCollection(
                 collectionId: collectionId,
-                name: "name",
-                description: "description"
+                name: name,
+                description: description
                 );
-
 
             request.Received().WithArgument("version", versionDate);
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
@@ -214,7 +219,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 collectionId: collectionId
                 );
 
-
             request.Received().WithArgument("version", versionDate);
             client.Received().DeleteAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
         }
@@ -230,10 +234,10 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             VisualRecognitionService service = new VisualRecognitionService(client);
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
-            var imagesFile = Model.FileWithMetadata;
+
             var collectionId = "collectionId";
-            
-            var imageUrl = new List<string>() { "imageUrl0", "imageUrl1" };
+            var imagesFile = Model.FileWithMetadata;
+            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
             var trainingData = "trainingData";
             var result = service.AddImages(
                 collectionId: collectionId,
@@ -241,7 +245,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 imageUrl: imageUrl,
                 trainingData: trainingData
                 );
-
 
             request.Received().WithArgument("version", versionDate);
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images");
@@ -263,7 +266,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var result = service.ListImages(
                 collectionId: collectionId
                 );
-
 
             request.Received().WithArgument("version", versionDate);
             client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images");
@@ -288,7 +290,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 imageId: imageId
                 );
 
-
             request.Received().WithArgument("version", versionDate);
             client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}");
         }
@@ -312,7 +313,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 imageId: imageId
                 );
 
-
             request.Received().WithArgument("version", versionDate);
             client.Received().DeleteAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}");
         }
@@ -331,12 +331,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
 
             var collectionId = "collectionId";
             var imageId = "imageId";
+            var size = "size";
             var result = service.GetJpegImage(
                 collectionId: collectionId,
                 imageId: imageId,
-                size: "size"
+                size: size
                 );
-
 
             request.Received().WithArgument("version", versionDate);
             client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}/jpeg");
@@ -359,7 +359,6 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
                 collectionId: collectionId
                 );
 
-
             request.Received().WithArgument("version", versionDate);
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/train");
         }
@@ -378,12 +377,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
 
             var collectionId = "collectionId";
             var imageId = "imageId";
+            var objects = new List<TrainingDataObject>();
             var result = service.AddImageTrainingData(
                 collectionId: collectionId,
                 imageId: imageId,
-                objects: new List<TrainingDataObject>() { new TrainingDataObject() }
+                objects: objects
                 );
-
 
             request.Received().WithArgument("version", versionDate);
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}/training_data");
@@ -401,10 +400,10 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var customerId = "customerId";
             var result = service.DeleteUserData(
-                customerId: "customerId"
+                customerId: customerId
                 );
-
 
             request.Received().WithArgument("version", versionDate);
         }
