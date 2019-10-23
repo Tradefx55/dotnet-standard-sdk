@@ -21,7 +21,7 @@ using NSubstitute;
 using System;
 using IBM.Cloud.SDK.Core.Http;
 using IBM.Cloud.SDK.Core.Authentication.NoAuth;
-using IBM.Watson.VisualRecognition.v4.Model;
+using IBM.Watson.VisualRecognition.v3.Model;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,7 +31,7 @@ using IBM.Cloud.SDK.Core.Http.Exceptions;
 using IBM.Cloud.SDK.Core.Model;
 using System.Net;
 
-namespace IBM.Watson.VisualRecognition.v4.UnitTests
+namespace IBM.Watson.VisualRecognition.v3.UnitTests
 {
     [TestClass]
     public class VisualRecognitionServiceUnitTests
@@ -89,7 +89,7 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
         #endregion
 
         [TestMethod]
-        public void Analyze_Success()
+        public void Classify_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -100,19 +100,22 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionIds = new List<string>(){ "collectionIds0", "collectionIds1" };
-            var features = new List<string>(){ "features0", "features1" };
-            var imagesFile = new List<FileWithMetadata>();
-            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
+            var imagesFile = new System.IO.MemoryStream();
+            var imagesFilename = "imagesFilename";
+            var imagesFileContentType = "imagesFileContentType";
+            var url = "url";
             var threshold = 0.5f;
+            var owners = new List<string>(){ "owners0", "owners1" };
+            var classifierIds = new List<string>(){ "classifierIds0", "classifierIds1" };
+            var acceptLanguage = "acceptLanguage";
 
-            var result = service.Analyze(collectionIds: collectionIds, features: features, imagesFile: imagesFile, imageUrl: imageUrl, threshold: threshold);
+            var result = service.Classify(imagesFile: imagesFile, imagesFilename: imagesFilename, imagesFileContentType: imagesFileContentType, url: url, threshold: threshold, owners: owners, classifierIds: classifierIds, acceptLanguage: acceptLanguage);
 
             request.Received().WithArgument("version", versionDate);
         }
 
         [TestMethod]
-        public void CreateCollection_Success()
+        public void CreateClassifier_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -124,15 +127,17 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             service.VersionDate = versionDate;
 
             var name = "name";
-            var description = "description";
+            var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
+            var negativeExamples = new System.IO.MemoryStream();
+            var negativeExamplesFilename = "negativeExamplesFilename";
 
-            var result = service.CreateCollection(name: name, description: description);
+            var result = service.CreateClassifier(name: name, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
 
             request.Received().WithArgument("version", versionDate);
         }
 
         [TestMethod]
-        public void ListCollections_Success()
+        public void ListClassifiers_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -143,14 +148,15 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var verbose = false;
 
-            var result = service.ListCollections();
+            var result = service.ListClassifiers(verbose: verbose);
 
             request.Received().WithArgument("version", versionDate);
         }
 
         [TestMethod]
-        public void GetCollection_Success()
+        public void GetClassifier_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -161,16 +167,16 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionId = "collectionId";
+            var classifierId = "classifierId";
 
-            var result = service.GetCollection(collectionId: collectionId);
+            var result = service.GetClassifier(classifierId: classifierId);
 
             request.Received().WithArgument("version", versionDate);
-            client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
+            client.Received().GetAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}");
         }
 
         [TestMethod]
-        public void UpdateCollection_Success()
+        public void UpdateClassifier_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -181,18 +187,19 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionId = "collectionId";
-            var name = "name";
-            var description = "description";
+            var classifierId = "classifierId";
+            var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
+            var negativeExamples = new System.IO.MemoryStream();
+            var negativeExamplesFilename = "negativeExamplesFilename";
 
-            var result = service.UpdateCollection(collectionId: collectionId, name: name, description: description);
+            var result = service.UpdateClassifier(classifierId: classifierId, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
 
             request.Received().WithArgument("version", versionDate);
-            client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
+            client.Received().PostAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}");
         }
 
         [TestMethod]
-        public void DeleteCollection_Success()
+        public void DeleteClassifier_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -203,39 +210,16 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionId = "collectionId";
+            var classifierId = "classifierId";
 
-            var result = service.DeleteCollection(collectionId: collectionId);
+            var result = service.DeleteClassifier(classifierId: classifierId);
 
             request.Received().WithArgument("version", versionDate);
-            client.Received().DeleteAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
+            client.Received().DeleteAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}");
         }
 
         [TestMethod]
-        public void AddImages_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.PostAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-            var imagesFile = new List<FileWithMetadata>();
-            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
-            var trainingData = "trainingData";
-
-            var result = service.AddImages(collectionId: collectionId, imagesFile: imagesFile, imageUrl: imageUrl, trainingData: trainingData);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images");
-        }
-
-        [TestMethod]
-        public void ListImages_Success()
+        public void GetCoreMlModel_Success()
         {
             IClient client = Substitute.For<IClient>();
             IRequest request = Substitute.For<IRequest>();
@@ -246,118 +230,12 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionId = "collectionId";
+            var classifierId = "classifierId";
 
-            var result = service.ListImages(collectionId: collectionId);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images");
-        }
-
-        [TestMethod]
-        public void GetImageDetails_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.GetAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-            var imageId = "imageId";
-
-            var result = service.GetImageDetails(collectionId: collectionId, imageId: imageId);
+            var result = service.GetCoreMlModel(classifierId: classifierId);
 
             request.Received().WithArgument("version", versionDate);
-            client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}");
-        }
-
-        [TestMethod]
-        public void DeleteImage_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.DeleteAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-            var imageId = "imageId";
-
-            var result = service.DeleteImage(collectionId: collectionId, imageId: imageId);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().DeleteAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}");
-        }
-
-        [TestMethod]
-        public void GetJpegImage_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.GetAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-            var imageId = "imageId";
-            var size = "size";
-
-            var result = service.GetJpegImage(collectionId: collectionId, imageId: imageId, size: size);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().GetAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}/jpeg");
-        }
-
-        [TestMethod]
-        public void Train_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.PostAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-
-            var result = service.Train(collectionId: collectionId);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/train");
-        }
-
-        [TestMethod]
-        public void AddImageTrainingData_Success()
-        {
-            IClient client = Substitute.For<IClient>();
-            IRequest request = Substitute.For<IRequest>();
-            client.PostAsync(Arg.Any<string>())
-                .Returns(request);
-
-            VisualRecognitionService service = new VisualRecognitionService(client);
-            var versionDate = "versionDate";
-            service.VersionDate = versionDate;
-
-            var collectionId = "collectionId";
-            var imageId = "imageId";
-            var objects = new List<TrainingDataObject>();
-
-            var result = service.AddImageTrainingData(collectionId: collectionId, imageId: imageId, objects: objects);
-
-            request.Received().WithArgument("version", versionDate);
-            client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}/training_data");
+            client.Received().GetAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}/core_ml_model");
         }
 
         [TestMethod]
