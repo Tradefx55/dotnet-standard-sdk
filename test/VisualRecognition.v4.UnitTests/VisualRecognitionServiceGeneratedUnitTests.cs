@@ -15,21 +15,21 @@
 *
 */
 
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using IBM.Cloud.SDK.Core.Http;
-using IBM.Cloud.SDK.Core.Authentication.NoAuth;
-using IBM.Watson.VisualRecognition.v4.Model;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using IBM.Cloud.SDK.Core.Http;
 using IBM.Cloud.SDK.Core.Http.Exceptions;
+using IBM.Cloud.SDK.Core.Authentication.NoAuth;
+using IBM.Watson.VisualRecognition.v4.Model;
 using IBM.Cloud.SDK.Core.Model;
-using System.Net;
 
 namespace IBM.Watson.VisualRecognition.v4.UnitTests
 {
@@ -80,11 +80,11 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
         [TestMethod]
         public void ConstructorNoUrl()
         {
-            var url = Environment.GetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL");
-            Environment.SetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL", null);
+            var url = System.Environment.GetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL");
+            System.Environment.SetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL", null);
             VisualRecognitionService service = Substitute.For<VisualRecognitionService>("versionDate");
             Assert.IsTrue(service.ServiceUrl == "https://gateway.watsonplatform.net/visual-recognition/api");
-            Environment.SetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL", url);
+            System.Environment.SetEnvironmentVariable("VISUAL_RECOGNITION_SERVICE_URL", url);
         }
         #endregion
 
@@ -100,15 +100,21 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var collectionIds = new List<string>(){ "collectionIds0", "collectionIds1" };
-            var features = new List<string>(){ "features0", "features1" };
-            var imagesFile = new List<FileWithMetadata>();
-            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
+            var collectionIds = new List<string>() { "collectionIds0", "collectionIds1" };
+                var collectionIds = new List<string>();
+            var features = new List<string>() { "features0", "features1" };
+                var features = new List<string>();
+            var imagesFile = new FileWithMetadata();
+                var imagesFile = new List<FileWithMetadata>();
+            var imageUrl = new List<string>() { "imageUrl0", "imageUrl1" };
+                var imageUrl = new List<string>();
             var threshold = 0.5f;
+                var threshold = new float?();
 
             var result = service.Analyze(collectionIds: collectionIds, features: features, imagesFile: imagesFile, imageUrl: imageUrl, threshold: threshold);
 
             request.Received().WithArgument("version", versionDate);
+
         }
 
         [TestMethod]
@@ -123,12 +129,22 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var name = "name";
-            var description = "description";
 
             var result = service.CreateCollection(name: name, description: description);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(name))
+            {
+                bodyObject["name"] = JToken.FromObject(name);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
 
         [TestMethod]
@@ -182,12 +198,22 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             service.VersionDate = versionDate;
 
             var collectionId = "collectionId";
-            var name = "name";
-            var description = "description";
 
             var result = service.UpdateCollection(collectionId: collectionId, name: name, description: description);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(name))
+            {
+                bodyObject["name"] = JToken.FromObject(name);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}");
         }
 
@@ -224,14 +250,18 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
             service.VersionDate = versionDate;
 
             var collectionId = "collectionId";
-            var imagesFile = new List<FileWithMetadata>();
-            var imageUrl = new List<string>(){ "imageUrl0", "imageUrl1" };
+            var imagesFile = new FileWithMetadata();
+                var imagesFile = new List<FileWithMetadata>();
+            var imageUrl = new List<string>() { "imageUrl0", "imageUrl1" };
+                var imageUrl = new List<string>();
             var trainingData = "trainingData";
+                var trainingData = new string();
 
             var result = service.AddImages(collectionId: collectionId, imagesFile: imagesFile, imageUrl: imageUrl, trainingData: trainingData);
 
             request.Received().WithArgument("version", versionDate);
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images");
+
         }
 
         [TestMethod]
@@ -352,11 +382,18 @@ namespace IBM.Watson.VisualRecognition.v4.UnitTests
 
             var collectionId = "collectionId";
             var imageId = "imageId";
-            var objects = new List<TrainingDataObject>();
 
             var result = service.AddImageTrainingData(collectionId: collectionId, imageId: imageId, objects: objects);
 
+            JObject bodyObject = new JObject();
+            if (objects != null && objects.Count > 0)
+            {
+                bodyObject["objects"] = JToken.FromObject(objects);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v4/collections/{collectionId}/images/{imageId}/training_data");
         }
 

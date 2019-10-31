@@ -15,21 +15,21 @@
 *
 */
 
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using IBM.Cloud.SDK.Core.Http;
-using IBM.Cloud.SDK.Core.Authentication.NoAuth;
-using IBM.Watson.Assistant.v1.Model;
-using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using IBM.Cloud.SDK.Core.Http;
 using IBM.Cloud.SDK.Core.Http.Exceptions;
+using IBM.Cloud.SDK.Core.Authentication.NoAuth;
+using IBM.Watson.Assistant.v1.Model;
 using IBM.Cloud.SDK.Core.Model;
-using System.Net;
 
 namespace IBM.Watson.Assistant.v1.UnitTests
 {
@@ -80,11 +80,11 @@ namespace IBM.Watson.Assistant.v1.UnitTests
         [TestMethod]
         public void ConstructorNoUrl()
         {
-            var url = Environment.GetEnvironmentVariable("ASSISTANT_SERVICE_URL");
-            Environment.SetEnvironmentVariable("ASSISTANT_SERVICE_URL", null);
+            var url = System.Environment.GetEnvironmentVariable("ASSISTANT_SERVICE_URL");
+            System.Environment.SetEnvironmentVariable("ASSISTANT_SERVICE_URL", null);
             AssistantService service = Substitute.For<AssistantService>("versionDate");
             Assert.IsTrue(service.ServiceUrl == "https://gateway.watsonplatform.net/assistant/api");
-            Environment.SetEnvironmentVariable("ASSISTANT_SERVICE_URL", url);
+            System.Environment.SetEnvironmentVariable("ASSISTANT_SERVICE_URL", url);
         }
         #endregion
 
@@ -101,17 +101,36 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var input = new MessageInput();
-            var intents = new List<RuntimeIntent>();
-            var entities = new List<RuntimeEntity>();
-            var alternateIntents = false;
-            var context = new Context();
-            var output = new OutputData();
             var nodesVisitedDetails = false;
 
             var result = service.Message(workspaceId: workspaceId, input: input, intents: intents, entities: entities, alternateIntents: alternateIntents, context: context, output: output, nodesVisitedDetails: nodesVisitedDetails);
 
+            JObject bodyObject = new JObject();
+            if (input != null)
+            {
+                bodyObject["input"] = JToken.FromObject(input);
+            }
+            if (intents != null && intents.Count > 0)
+            {
+                bodyObject["intents"] = JToken.FromObject(intents);
+            }
+            if (entities != null && entities.Count > 0)
+            {
+                bodyObject["entities"] = JToken.FromObject(entities);
+            }
+            bodyObject["alternate_intents"] = JToken.FromObject(alternateIntents);
+            if (context != null)
+            {
+                bodyObject["context"] = JToken.FromObject(context);
+            }
+            if (output != null)
+            {
+                bodyObject["output"] = JToken.FromObject(output);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/message");
         }
 
@@ -149,20 +168,51 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var name = "name";
-            var description = "description";
-            var language = "language";
-            var metadata = new Dictionary<string, object>();
-            var learningOptOut = false;
-            var systemSettings = new WorkspaceSystemSettings();
-            var intents = new List<CreateIntent>();
-            var entities = new List<CreateEntity>();
-            var dialogNodes = new List<DialogNode>();
-            var counterexamples = new List<Counterexample>();
 
             var result = service.CreateWorkspace(name: name, description: description, language: language, metadata: metadata, learningOptOut: learningOptOut, systemSettings: systemSettings, intents: intents, entities: entities, dialogNodes: dialogNodes, counterexamples: counterexamples);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(name))
+            {
+                bodyObject["name"] = JToken.FromObject(name);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            if (!string.IsNullOrEmpty(language))
+            {
+                bodyObject["language"] = JToken.FromObject(language);
+            }
+            if (metadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(metadata);
+            }
+            bodyObject["learning_opt_out"] = JToken.FromObject(learningOptOut);
+            if (systemSettings != null)
+            {
+                bodyObject["system_settings"] = JToken.FromObject(systemSettings);
+            }
+            if (intents != null && intents.Count > 0)
+            {
+                bodyObject["intents"] = JToken.FromObject(intents);
+            }
+            if (entities != null && entities.Count > 0)
+            {
+                bodyObject["entities"] = JToken.FromObject(entities);
+            }
+            if (dialogNodes != null && dialogNodes.Count > 0)
+            {
+                bodyObject["dialog_nodes"] = JToken.FromObject(dialogNodes);
+            }
+            if (counterexamples != null && counterexamples.Count > 0)
+            {
+                bodyObject["counterexamples"] = JToken.FromObject(counterexamples);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
 
         [TestMethod]
@@ -201,21 +251,52 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var name = "name";
-            var description = "description";
-            var language = "language";
-            var metadata = new Dictionary<string, object>();
-            var learningOptOut = false;
-            var systemSettings = new WorkspaceSystemSettings();
-            var intents = new List<CreateIntent>();
-            var entities = new List<CreateEntity>();
-            var dialogNodes = new List<DialogNode>();
-            var counterexamples = new List<Counterexample>();
             var append = false;
 
             var result = service.UpdateWorkspace(workspaceId: workspaceId, name: name, description: description, language: language, metadata: metadata, learningOptOut: learningOptOut, systemSettings: systemSettings, intents: intents, entities: entities, dialogNodes: dialogNodes, counterexamples: counterexamples, append: append);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(name))
+            {
+                bodyObject["name"] = JToken.FromObject(name);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            if (!string.IsNullOrEmpty(language))
+            {
+                bodyObject["language"] = JToken.FromObject(language);
+            }
+            if (metadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(metadata);
+            }
+            bodyObject["learning_opt_out"] = JToken.FromObject(learningOptOut);
+            if (systemSettings != null)
+            {
+                bodyObject["system_settings"] = JToken.FromObject(systemSettings);
+            }
+            if (intents != null && intents.Count > 0)
+            {
+                bodyObject["intents"] = JToken.FromObject(intents);
+            }
+            if (entities != null && entities.Count > 0)
+            {
+                bodyObject["entities"] = JToken.FromObject(entities);
+            }
+            if (dialogNodes != null && dialogNodes.Count > 0)
+            {
+                bodyObject["dialog_nodes"] = JToken.FromObject(dialogNodes);
+            }
+            if (counterexamples != null && counterexamples.Count > 0)
+            {
+                bodyObject["counterexamples"] = JToken.FromObject(counterexamples);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}");
         }
 
@@ -277,13 +358,26 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var intent = "intent";
-            var description = "description";
-            var examples = new List<Example>();
 
             var result = service.CreateIntent(workspaceId: workspaceId, intent: intent, description: description, examples: examples);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(intent))
+            {
+                bodyObject["intent"] = JToken.FromObject(intent);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            if (examples != null && examples.Count > 0)
+            {
+                bodyObject["examples"] = JToken.FromObject(examples);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents");
         }
 
@@ -324,13 +418,26 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var intent = "intent";
-            var newIntent = "newIntent";
-            var newDescription = "newDescription";
-            var newExamples = new List<Example>();
 
             var result = service.UpdateIntent(workspaceId: workspaceId, intent: intent, newIntent: newIntent, newDescription: newDescription, newExamples: newExamples);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newIntent))
+            {
+                bodyObject["intent"] = JToken.FromObject(newIntent);
+            }
+            if (!string.IsNullOrEmpty(newDescription))
+            {
+                bodyObject["description"] = JToken.FromObject(newDescription);
+            }
+            if (newExamples != null && newExamples.Count > 0)
+            {
+                bodyObject["examples"] = JToken.FromObject(newExamples);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}");
         }
 
@@ -394,12 +501,22 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var intent = "intent";
-            var text = "text";
-            var mentions = new List<Mention>();
 
             var result = service.CreateExample(workspaceId: workspaceId, intent: intent, text: text, mentions: mentions);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(text))
+            {
+                bodyObject["text"] = JToken.FromObject(text);
+            }
+            if (mentions != null && mentions.Count > 0)
+            {
+                bodyObject["mentions"] = JToken.FromObject(mentions);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples");
         }
 
@@ -441,12 +558,22 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var intent = "intent";
             var text = "text";
-            var newText = "newText";
-            var newMentions = new List<Mention>();
 
             var result = service.UpdateExample(workspaceId: workspaceId, intent: intent, text: text, newText: newText, newMentions: newMentions);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newText))
+            {
+                bodyObject["text"] = JToken.FromObject(newText);
+            }
+            if (newMentions != null && newMentions.Count > 0)
+            {
+                bodyObject["mentions"] = JToken.FromObject(newMentions);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples/{text}");
         }
 
@@ -509,11 +636,18 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var text = "text";
 
             var result = service.CreateCounterexample(workspaceId: workspaceId, text: text);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(text))
+            {
+                bodyObject["text"] = JToken.FromObject(text);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples");
         }
 
@@ -553,11 +687,18 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var text = "text";
-            var newText = "newText";
 
             var result = service.UpdateCounterexample(workspaceId: workspaceId, text: text, newText: newText);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newText))
+            {
+                bodyObject["text"] = JToken.FromObject(newText);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples/{text}");
         }
 
@@ -620,15 +761,31 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var entity = "entity";
-            var description = "description";
-            var metadata = new Dictionary<string, object>();
-            var fuzzyMatch = false;
-            var values = new List<CreateValue>();
 
             var result = service.CreateEntity(workspaceId: workspaceId, entity: entity, description: description, metadata: metadata, fuzzyMatch: fuzzyMatch, values: values);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(entity))
+            {
+                bodyObject["entity"] = JToken.FromObject(entity);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            if (metadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(metadata);
+            }
+            bodyObject["fuzzy_match"] = JToken.FromObject(fuzzyMatch);
+            if (values != null && values.Count > 0)
+            {
+                bodyObject["values"] = JToken.FromObject(values);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities");
         }
 
@@ -669,15 +826,31 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var entity = "entity";
-            var newEntity = "newEntity";
-            var newDescription = "newDescription";
-            var newMetadata = new Dictionary<string, object>();
-            var newFuzzyMatch = false;
-            var newValues = new List<CreateValue>();
 
             var result = service.UpdateEntity(workspaceId: workspaceId, entity: entity, newEntity: newEntity, newDescription: newDescription, newMetadata: newMetadata, newFuzzyMatch: newFuzzyMatch, newValues: newValues);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newEntity))
+            {
+                bodyObject["entity"] = JToken.FromObject(newEntity);
+            }
+            if (!string.IsNullOrEmpty(newDescription))
+            {
+                bodyObject["description"] = JToken.FromObject(newDescription);
+            }
+            if (newMetadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(newMetadata);
+            }
+            bodyObject["fuzzy_match"] = JToken.FromObject(newFuzzyMatch);
+            if (newValues != null && newValues.Count > 0)
+            {
+                bodyObject["values"] = JToken.FromObject(newValues);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}");
         }
 
@@ -765,15 +938,34 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var entity = "entity";
-            var value = "value";
-            var metadata = new Dictionary<string, object>();
-            var type = "type";
-            var synonyms = new List<string>();
-            var patterns = new List<string>();
 
             var result = service.CreateValue(workspaceId: workspaceId, entity: entity, value: value, metadata: metadata, type: type, synonyms: synonyms, patterns: patterns);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(value))
+            {
+                bodyObject["value"] = JToken.FromObject(value);
+            }
+            if (metadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(metadata);
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                bodyObject["type"] = JToken.FromObject(type);
+            }
+            if (synonyms != null && synonyms.Count > 0)
+            {
+                bodyObject["synonyms"] = JToken.FromObject(synonyms);
+            }
+            if (patterns != null && patterns.Count > 0)
+            {
+                bodyObject["patterns"] = JToken.FromObject(patterns);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values");
         }
 
@@ -816,15 +1008,34 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var value = "value";
-            var newValue = "newValue";
-            var newMetadata = new Dictionary<string, object>();
-            var newType = "newType";
-            var newSynonyms = new List<string>();
-            var newPatterns = new List<string>();
 
             var result = service.UpdateValue(workspaceId: workspaceId, entity: entity, value: value, newValue: newValue, newMetadata: newMetadata, newType: newType, newSynonyms: newSynonyms, newPatterns: newPatterns);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newValue))
+            {
+                bodyObject["value"] = JToken.FromObject(newValue);
+            }
+            if (newMetadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(newMetadata);
+            }
+            if (!string.IsNullOrEmpty(newType))
+            {
+                bodyObject["type"] = JToken.FromObject(newType);
+            }
+            if (newSynonyms != null && newSynonyms.Count > 0)
+            {
+                bodyObject["synonyms"] = JToken.FromObject(newSynonyms);
+            }
+            if (newPatterns != null && newPatterns.Count > 0)
+            {
+                bodyObject["patterns"] = JToken.FromObject(newPatterns);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}");
         }
 
@@ -891,11 +1102,18 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var value = "value";
-            var synonym = "synonym";
 
             var result = service.CreateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(synonym))
+            {
+                bodyObject["synonym"] = JToken.FromObject(synonym);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms");
         }
 
@@ -939,11 +1157,18 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var entity = "entity";
             var value = "value";
             var synonym = "synonym";
-            var newSynonym = "newSynonym";
 
             var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newSynonym))
+            {
+                bodyObject["synonym"] = JToken.FromObject(newSynonym);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms/{synonym}");
         }
 
@@ -1007,28 +1232,86 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var dialogNode = "dialogNode";
-            var description = "description";
-            var conditions = "conditions";
-            var parent = "parent";
-            var previousSibling = "previousSibling";
-            var output = new DialogNodeOutput();
-            var context = new Dictionary<string, object>();
-            var metadata = new Dictionary<string, object>();
-            var nextStep = new DialogNodeNextStep();
-            var title = "title";
-            var type = "type";
-            var eventName = "eventName";
-            var variable = "variable";
-            var actions = new List<DialogNodeAction>();
-            var digressIn = "digressIn";
-            var digressOut = "digressOut";
-            var digressOutSlots = "digressOutSlots";
-            var userLabel = "userLabel";
 
             var result = service.CreateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, description: description, conditions: conditions, parent: parent, previousSibling: previousSibling, output: output, context: context, metadata: metadata, nextStep: nextStep, title: title, type: type, eventName: eventName, variable: variable, actions: actions, digressIn: digressIn, digressOut: digressOut, digressOutSlots: digressOutSlots, userLabel: userLabel);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(dialogNode))
+            {
+                bodyObject["dialog_node"] = JToken.FromObject(dialogNode);
+            }
+            if (!string.IsNullOrEmpty(description))
+            {
+                bodyObject["description"] = JToken.FromObject(description);
+            }
+            if (!string.IsNullOrEmpty(conditions))
+            {
+                bodyObject["conditions"] = JToken.FromObject(conditions);
+            }
+            if (!string.IsNullOrEmpty(parent))
+            {
+                bodyObject["parent"] = JToken.FromObject(parent);
+            }
+            if (!string.IsNullOrEmpty(previousSibling))
+            {
+                bodyObject["previous_sibling"] = JToken.FromObject(previousSibling);
+            }
+            if (output != null)
+            {
+                bodyObject["output"] = JToken.FromObject(output);
+            }
+            if (context != null)
+            {
+                bodyObject["context"] = JToken.FromObject(context);
+            }
+            if (metadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(metadata);
+            }
+            if (nextStep != null)
+            {
+                bodyObject["next_step"] = JToken.FromObject(nextStep);
+            }
+            if (!string.IsNullOrEmpty(title))
+            {
+                bodyObject["title"] = JToken.FromObject(title);
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                bodyObject["type"] = JToken.FromObject(type);
+            }
+            if (!string.IsNullOrEmpty(eventName))
+            {
+                bodyObject["event_name"] = JToken.FromObject(eventName);
+            }
+            if (!string.IsNullOrEmpty(variable))
+            {
+                bodyObject["variable"] = JToken.FromObject(variable);
+            }
+            if (actions != null && actions.Count > 0)
+            {
+                bodyObject["actions"] = JToken.FromObject(actions);
+            }
+            if (!string.IsNullOrEmpty(digressIn))
+            {
+                bodyObject["digress_in"] = JToken.FromObject(digressIn);
+            }
+            if (!string.IsNullOrEmpty(digressOut))
+            {
+                bodyObject["digress_out"] = JToken.FromObject(digressOut);
+            }
+            if (!string.IsNullOrEmpty(digressOutSlots))
+            {
+                bodyObject["digress_out_slots"] = JToken.FromObject(digressOutSlots);
+            }
+            if (!string.IsNullOrEmpty(userLabel))
+            {
+                bodyObject["user_label"] = JToken.FromObject(userLabel);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes");
         }
 
@@ -1068,28 +1351,86 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var dialogNode = "dialogNode";
-            var newDialogNode = "newDialogNode";
-            var newDescription = "newDescription";
-            var newConditions = "newConditions";
-            var newParent = "newParent";
-            var newPreviousSibling = "newPreviousSibling";
-            var newOutput = new DialogNodeOutput();
-            var newContext = new Dictionary<string, object>();
-            var newMetadata = new Dictionary<string, object>();
-            var newNextStep = new DialogNodeNextStep();
-            var newTitle = "newTitle";
-            var newType = "newType";
-            var newEventName = "newEventName";
-            var newVariable = "newVariable";
-            var newActions = new List<DialogNodeAction>();
-            var newDigressIn = "newDigressIn";
-            var newDigressOut = "newDigressOut";
-            var newDigressOutSlots = "newDigressOutSlots";
-            var newUserLabel = "newUserLabel";
 
             var result = service.UpdateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, newDialogNode: newDialogNode, newDescription: newDescription, newConditions: newConditions, newParent: newParent, newPreviousSibling: newPreviousSibling, newOutput: newOutput, newContext: newContext, newMetadata: newMetadata, newNextStep: newNextStep, newTitle: newTitle, newType: newType, newEventName: newEventName, newVariable: newVariable, newActions: newActions, newDigressIn: newDigressIn, newDigressOut: newDigressOut, newDigressOutSlots: newDigressOutSlots, newUserLabel: newUserLabel);
 
+            JObject bodyObject = new JObject();
+            if (!string.IsNullOrEmpty(newDialogNode))
+            {
+                bodyObject["dialog_node"] = JToken.FromObject(newDialogNode);
+            }
+            if (!string.IsNullOrEmpty(newDescription))
+            {
+                bodyObject["description"] = JToken.FromObject(newDescription);
+            }
+            if (!string.IsNullOrEmpty(newConditions))
+            {
+                bodyObject["conditions"] = JToken.FromObject(newConditions);
+            }
+            if (!string.IsNullOrEmpty(newParent))
+            {
+                bodyObject["parent"] = JToken.FromObject(newParent);
+            }
+            if (!string.IsNullOrEmpty(newPreviousSibling))
+            {
+                bodyObject["previous_sibling"] = JToken.FromObject(newPreviousSibling);
+            }
+            if (newOutput != null)
+            {
+                bodyObject["output"] = JToken.FromObject(newOutput);
+            }
+            if (newContext != null)
+            {
+                bodyObject["context"] = JToken.FromObject(newContext);
+            }
+            if (newMetadata != null)
+            {
+                bodyObject["metadata"] = JToken.FromObject(newMetadata);
+            }
+            if (newNextStep != null)
+            {
+                bodyObject["next_step"] = JToken.FromObject(newNextStep);
+            }
+            if (!string.IsNullOrEmpty(newTitle))
+            {
+                bodyObject["title"] = JToken.FromObject(newTitle);
+            }
+            if (!string.IsNullOrEmpty(newType))
+            {
+                bodyObject["type"] = JToken.FromObject(newType);
+            }
+            if (!string.IsNullOrEmpty(newEventName))
+            {
+                bodyObject["event_name"] = JToken.FromObject(newEventName);
+            }
+            if (!string.IsNullOrEmpty(newVariable))
+            {
+                bodyObject["variable"] = JToken.FromObject(newVariable);
+            }
+            if (newActions != null && newActions.Count > 0)
+            {
+                bodyObject["actions"] = JToken.FromObject(newActions);
+            }
+            if (!string.IsNullOrEmpty(newDigressIn))
+            {
+                bodyObject["digress_in"] = JToken.FromObject(newDigressIn);
+            }
+            if (!string.IsNullOrEmpty(newDigressOut))
+            {
+                bodyObject["digress_out"] = JToken.FromObject(newDigressOut);
+            }
+            if (!string.IsNullOrEmpty(newDigressOutSlots))
+            {
+                bodyObject["digress_out_slots"] = JToken.FromObject(newDigressOutSlots);
+            }
+            if (!string.IsNullOrEmpty(newUserLabel))
+            {
+                bodyObject["user_label"] = JToken.FromObject(newUserLabel);
+            }
+            var json = JsonConvert.SerializeObject(bodyObject);
+
             request.Received().WithArgument("version", versionDate);
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes/{dialogNode}");
         }
 
