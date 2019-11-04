@@ -143,6 +143,8 @@ namespace IBM.Watson.Assistant.v2.UnitTests
 
             var assistantId = "assistantId";
             var sessionId = "sessionId";
+            var input = new MessageInput();
+            var context = new MessageContext();
 
             var result = service.Message(assistantId: assistantId, sessionId: sessionId, input: input, context: context);
 
@@ -156,7 +158,6 @@ namespace IBM.Watson.Assistant.v2.UnitTests
                 bodyObject["context"] = JToken.FromObject(context);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v2/assistants/{assistantId}/sessions/{sessionId}/message");

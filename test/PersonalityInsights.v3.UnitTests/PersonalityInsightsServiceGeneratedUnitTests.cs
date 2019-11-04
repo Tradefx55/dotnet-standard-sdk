@@ -100,6 +100,7 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var content = new Content();
             var contentType = "contentType";
             var contentLanguage = "contentLanguage";
             var acceptLanguage = "acceptLanguage";
@@ -111,7 +112,6 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
 
             JObject bodyObject = new JObject();
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -128,6 +128,7 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var content = new Content();
             var contentType = "contentType";
             var contentLanguage = "contentLanguage";
             var acceptLanguage = "acceptLanguage";
@@ -139,7 +140,6 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
 
             JObject bodyObject = new JObject();
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }

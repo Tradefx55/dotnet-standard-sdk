@@ -100,7 +100,7 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var fileContentType = "fileContentType";
             var model = "model";
 
@@ -122,7 +122,7 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var fileContentType = "fileContentType";
             var model = "model";
 
@@ -144,7 +144,7 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var fileContentType = "fileContentType";
             var model = "model";
 
@@ -166,8 +166,8 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var file1 = new System.IO.MemoryStream();
-                var file2 = new System.IO.MemoryStream();
+            var file1 = new MemoryStream();
+            var file2 = new MemoryStream();
             var file1ContentType = "file1ContentType";
             var file2ContentType = "file2ContentType";
             var file1Label = "file1Label";
@@ -192,6 +192,9 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var feedbackData = new FeedbackDataInput();
+            var userId = "userId";
+            var comment = "comment";
 
             var result = service.AddFeedback(feedbackData: feedbackData, userId: userId, comment: comment);
 
@@ -209,7 +212,6 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
                 bodyObject["comment"] = JToken.FromObject(comment);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -227,8 +229,8 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             service.VersionDate = versionDate;
 
             var feedbackType = "feedbackType";
-            var before = DateTime.MaxValue;
-            var after = DateTime.MaxValue;
+            DateTime? before = DateTime.MaxValue;
+            DateTime? after = DateTime.MaxValue;
             var documentTitle = "documentTitle";
             var modelId = "modelId";
             var modelVersion = "modelVersion";
@@ -238,7 +240,7 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             var typeRemoved = "typeRemoved";
             var typeAdded = "typeAdded";
             var typeNotChanged = "typeNotChanged";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var cursor = "cursor";
             var sort = "sort";
             var includeTotal = false;
@@ -303,16 +305,12 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             service.VersionDate = versionDate;
 
             var function = "function";
-                var inputCredentialsFile = new System.IO.MemoryStream();
+            var inputCredentialsFile = new MemoryStream();
             var inputBucketLocation = "inputBucketLocation";
-                var inputBucketLocation = new string();
             var inputBucketName = "inputBucketName";
-                var inputBucketName = new string();
-                var outputCredentialsFile = new System.IO.MemoryStream();
+            var outputCredentialsFile = new MemoryStream();
             var outputBucketLocation = "outputBucketLocation";
-                var outputBucketLocation = new string();
             var outputBucketName = "outputBucketName";
-                var outputBucketName = new string();
             var model = "model";
 
             var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);

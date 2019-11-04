@@ -100,17 +100,13 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var imagesFile = new System.IO.MemoryStream();
+            var imagesFile = new MemoryStream();
             var imagesFilename = "imagesFilename";
             var imagesFileContentType = "imagesFileContentType";
             var url = "url";
-                var url = new string();
-            var threshold = 0.5f;
-                var threshold = new float?();
+            float? threshold = 0.5f;
             var owners = new List<string>() { "owners0", "owners1" };
-                var owners = new List<string>();
             var classifierIds = new List<string>() { "classifierIds0", "classifierIds1" };
-                var classifierIds = new List<string>();
             var acceptLanguage = "acceptLanguage";
 
             var result = service.Classify(imagesFile: imagesFile, imagesFilename: imagesFilename, imagesFileContentType: imagesFileContentType, url: url, threshold: threshold, owners: owners, classifierIds: classifierIds, acceptLanguage: acceptLanguage);
@@ -132,10 +128,9 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             service.VersionDate = versionDate;
 
             var name = "name";
-                var name = new string();
-                var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
-                positiveExamples.Add("positiveExamples", new System.IO.MemoryStream());
-                var negativeExamples = new System.IO.MemoryStream();
+            var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
+            positiveExamples.Add("positiveExamples", new System.IO.MemoryStream());
+            var negativeExamples = new MemoryStream();
             var negativeExamplesFilename = "negativeExamplesFilename";
 
             var result = service.CreateClassifier(name: name, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
@@ -196,9 +191,9 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             service.VersionDate = versionDate;
 
             var classifierId = "classifierId";
-                var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
-                positiveExamples.Add("positiveExamples", new System.IO.MemoryStream());
-                var negativeExamples = new System.IO.MemoryStream();
+            var positiveExamples = new Dictionary<string, System.IO.MemoryStream>();
+            positiveExamples.Add("positiveExamples", new System.IO.MemoryStream());
+            var negativeExamples = new MemoryStream();
             var negativeExamplesFilename = "negativeExamplesFilename";
 
             var result = service.UpdateClassifier(classifierId: classifierId, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);

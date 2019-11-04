@@ -100,6 +100,10 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var text = new List<string>();
+            var modelId = "modelId";
+            var source = "source";
+            var target = "target";
 
             var result = service.Translate(text: text, modelId: modelId, source: source, target: target);
 
@@ -121,7 +125,6 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
                 bodyObject["target"] = JToken.FromObject(target);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -160,11 +163,8 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
             var result = service.Identify(text: text);
 
-            JObject bodyObject = new JObject();
-            var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
-            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
+            request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(text)));
         }
 
         [TestMethod]
@@ -201,8 +201,8 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             service.VersionDate = versionDate;
 
             var baseModelId = "baseModelId";
-                var forcedGlossary = new System.IO.MemoryStream();
-                var parallelCorpus = new System.IO.MemoryStream();
+            var forcedGlossary = new MemoryStream();
+            var parallelCorpus = new MemoryStream();
             var name = "name";
 
             var result = service.CreateModel(baseModelId: baseModelId, forcedGlossary: forcedGlossary, parallelCorpus: parallelCorpus, name: name);
@@ -281,17 +281,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var filename = "filename";
             var fileContentType = "fileContentType";
             var modelId = "modelId";
-                var modelId = new string();
             var source = "source";
-                var source = new string();
             var target = "target";
-                var target = new string();
             var documentId = "documentId";
-                var documentId = new string();
 
             var result = service.TranslateDocument(file: file, filename: filename, fileContentType: fileContentType, modelId: modelId, source: source, target: target, documentId: documentId);
 

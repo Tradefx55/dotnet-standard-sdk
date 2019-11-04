@@ -101,6 +101,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var name = "name";
+            var description = "description";
+            var size = "size";
 
             var result = service.CreateEnvironment(name: name, description: description, size: size);
 
@@ -118,7 +121,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["size"] = JToken.FromObject(size);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -175,6 +177,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var name = "name";
+            var description = "description";
+            var size = "size";
 
             var result = service.UpdateEnvironment(environmentId: environmentId, name: name, description: description, size: size);
 
@@ -192,7 +197,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["size"] = JToken.FromObject(size);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}");
@@ -252,6 +256,12 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var name = "name";
+            var description = "description";
+            var conversions = new Conversions();
+            var enrichments = new List<Enrichment>();
+            var normalizations = new List<NormalizationOperation>();
+            var source = new Source();
 
             var result = service.CreateConfiguration(environmentId: environmentId, name: name, description: description, conversions: conversions, enrichments: enrichments, normalizations: normalizations, source: source);
 
@@ -281,7 +291,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["source"] = JToken.FromObject(source);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations");
@@ -343,6 +352,12 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var configurationId = "configurationId";
+            var name = "name";
+            var description = "description";
+            var conversions = new Conversions();
+            var enrichments = new List<Enrichment>();
+            var normalizations = new List<NormalizationOperation>();
+            var source = new Source();
 
             var result = service.UpdateConfiguration(environmentId: environmentId, configurationId: configurationId, name: name, description: description, conversions: conversions, enrichments: enrichments, normalizations: normalizations, source: source);
 
@@ -372,7 +387,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["source"] = JToken.FromObject(source);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations/{configurationId}");
@@ -412,6 +426,10 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var name = "name";
+            var description = "description";
+            var configurationId = "configurationId";
+            var language = "language";
 
             var result = service.CreateCollection(environmentId: environmentId, name: name, description: description, configurationId: configurationId, language: language);
 
@@ -433,7 +451,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["language"] = JToken.FromObject(language);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections");
@@ -495,6 +512,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
+            var name = "name";
+            var description = "description";
+            var configurationId = "configurationId";
 
             var result = service.UpdateCollection(environmentId: environmentId, collectionId: collectionId, name: name, description: description, configurationId: configurationId);
 
@@ -512,7 +532,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["configuration_id"] = JToken.FromObject(configurationId);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}");
@@ -595,6 +614,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
+            var expansions = new List<Expansion>();
 
             var result = service.CreateExpansions(environmentId: environmentId, collectionId: collectionId, expansions: expansions);
 
@@ -604,7 +624,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["expansions"] = JToken.FromObject(expansions);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/expansions");
@@ -666,6 +685,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
+            var tokenizationRules = new List<TokenDictRule>();
 
             var result = service.CreateTokenizationDictionary(environmentId: environmentId, collectionId: collectionId, tokenizationRules: tokenizationRules);
 
@@ -675,7 +695,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["tokenization_rules"] = JToken.FromObject(tokenizationRules);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/tokenization_dictionary");
@@ -737,7 +756,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
-                var stopwordFile = new System.IO.MemoryStream();
+            var stopwordFile = new MemoryStream();
             var stopwordFilename = "stopwordFilename";
 
             var result = service.CreateStopwordList(environmentId: environmentId, collectionId: collectionId, stopwordFile: stopwordFile, stopwordFilename: stopwordFilename);
@@ -782,11 +801,10 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var filename = "filename";
             var fileContentType = "fileContentType";
             var metadata = "metadata";
-                var metadata = new string();
 
             var result = service.AddDocument(environmentId: environmentId, collectionId: collectionId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
 
@@ -832,11 +850,10 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var environmentId = "environmentId";
             var collectionId = "collectionId";
             var documentId = "documentId";
-                var file = new System.IO.MemoryStream();
+            var file = new MemoryStream();
             var filename = "filename";
             var fileContentType = "fileContentType";
             var metadata = "metadata";
-                var metadata = new string();
 
             var result = service.UpdateDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
 
@@ -881,6 +898,26 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
+            var filter = "filter";
+            var query = "query";
+            var naturalLanguageQuery = "naturalLanguageQuery";
+            var passages = false;
+            var aggregation = "aggregation";
+            var count = 1;
+            var _return = "_return";
+            var offset = 1;
+            var sort = "sort";
+            var highlight = false;
+            var passagesFields = "passagesFields";
+            var passagesCount = 1;
+            var passagesCharacters = 1;
+            var deduplicate = false;
+            var deduplicateField = "deduplicateField";
+            var similar = false;
+            var similarDocumentIds = "similarDocumentIds";
+            var similarFields = "similarFields";
+            var bias = "bias";
+            var spellingSuggestions = false;
             var xWatsonLoggingOptOut = false;
 
             var result = service.Query(environmentId: environmentId, collectionId: collectionId, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicate: deduplicate, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields, bias: bias, spellingSuggestions: spellingSuggestions, xWatsonLoggingOptOut: xWatsonLoggingOptOut);
@@ -903,9 +940,17 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             {
                 bodyObject["aggregation"] = JToken.FromObject(aggregation);
             }
+            if (count != null)
+            {
+                bodyObject["count"] = JToken.FromObject(count);
+            }
             if (!string.IsNullOrEmpty(_return))
             {
                 bodyObject["return"] = JToken.FromObject(_return);
+            }
+            if (offset != null)
+            {
+                bodyObject["offset"] = JToken.FromObject(offset);
             }
             if (!string.IsNullOrEmpty(sort))
             {
@@ -915,6 +960,14 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             if (!string.IsNullOrEmpty(passagesFields))
             {
                 bodyObject["passages.fields"] = JToken.FromObject(passagesFields);
+            }
+            if (passagesCount != null)
+            {
+                bodyObject["passages.count"] = JToken.FromObject(passagesCount);
+            }
+            if (passagesCharacters != null)
+            {
+                bodyObject["passages.characters"] = JToken.FromObject(passagesCharacters);
             }
             bodyObject["deduplicate"] = JToken.FromObject(deduplicate);
             if (!string.IsNullOrEmpty(deduplicateField))
@@ -936,7 +989,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             }
             bodyObject["spelling_suggestions"] = JToken.FromObject(spellingSuggestions);
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/query");
@@ -961,14 +1013,14 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var naturalLanguageQuery = "naturalLanguageQuery";
             var passages = false;
             var aggregation = "aggregation";
-            var count = 1;
+            long? count = 1;
             var _return = new List<string>() { "_return0", "_return1" };
-            var offset = 1;
+            long? offset = 1;
             var sort = new List<string>() { "sort0", "sort1" };
             var highlight = false;
             var passagesFields = new List<string>() { "passagesFields0", "passagesFields1" };
-            var passagesCount = 1;
-            var passagesCharacters = 1;
+            long? passagesCount = 1;
+            long? passagesCharacters = 1;
             var deduplicateField = "deduplicateField";
             var similar = false;
             var similarDocumentIds = new List<string>() { "similarDocumentIds0", "similarDocumentIds1" };
@@ -993,6 +1045,26 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var collectionIds = "collectionIds";
+            var filter = "filter";
+            var query = "query";
+            var naturalLanguageQuery = "naturalLanguageQuery";
+            var passages = false;
+            var aggregation = "aggregation";
+            var count = 1;
+            var _return = "_return";
+            var offset = 1;
+            var sort = "sort";
+            var highlight = false;
+            var passagesFields = "passagesFields";
+            var passagesCount = 1;
+            var passagesCharacters = 1;
+            var deduplicate = false;
+            var deduplicateField = "deduplicateField";
+            var similar = false;
+            var similarDocumentIds = "similarDocumentIds";
+            var similarFields = "similarFields";
+            var bias = "bias";
             var xWatsonLoggingOptOut = false;
 
             var result = service.FederatedQuery(environmentId: environmentId, collectionIds: collectionIds, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicate: deduplicate, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields, bias: bias, xWatsonLoggingOptOut: xWatsonLoggingOptOut);
@@ -1019,9 +1091,17 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             {
                 bodyObject["aggregation"] = JToken.FromObject(aggregation);
             }
+            if (count != null)
+            {
+                bodyObject["count"] = JToken.FromObject(count);
+            }
             if (!string.IsNullOrEmpty(_return))
             {
                 bodyObject["return"] = JToken.FromObject(_return);
+            }
+            if (offset != null)
+            {
+                bodyObject["offset"] = JToken.FromObject(offset);
             }
             if (!string.IsNullOrEmpty(sort))
             {
@@ -1031,6 +1111,14 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             if (!string.IsNullOrEmpty(passagesFields))
             {
                 bodyObject["passages.fields"] = JToken.FromObject(passagesFields);
+            }
+            if (passagesCount != null)
+            {
+                bodyObject["passages.count"] = JToken.FromObject(passagesCount);
+            }
+            if (passagesCharacters != null)
+            {
+                bodyObject["passages.characters"] = JToken.FromObject(passagesCharacters);
             }
             bodyObject["deduplicate"] = JToken.FromObject(deduplicate);
             if (!string.IsNullOrEmpty(deduplicateField))
@@ -1051,7 +1139,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["bias"] = JToken.FromObject(bias);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/query");
@@ -1075,9 +1162,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var query = "query";
             var naturalLanguageQuery = "naturalLanguageQuery";
             var aggregation = "aggregation";
-            var count = 1;
+            long? count = 1;
             var _return = new List<string>() { "_return0", "_return1" };
-            var offset = 1;
+            long? offset = 1;
             var sort = new List<string>() { "sort0", "sort1" };
             var highlight = false;
             var deduplicateField = "deduplicateField";
@@ -1107,7 +1194,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var collectionId = "collectionId";
             var prefix = "prefix";
             var field = "field";
-            var count = 1;
+            long? count = 1;
 
             var result = service.GetAutocompletion(environmentId: environmentId, collectionId: collectionId, prefix: prefix, field: field, count: count);
 
@@ -1150,6 +1237,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var collectionId = "collectionId";
+            var naturalLanguageQuery = "naturalLanguageQuery";
+            var filter = "filter";
+            var examples = new List<TrainingExample>();
 
             var result = service.AddTrainingData(environmentId: environmentId, collectionId: collectionId, naturalLanguageQuery: naturalLanguageQuery, filter: filter, examples: examples);
 
@@ -1167,7 +1257,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["examples"] = JToken.FromObject(examples);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data");
@@ -1275,6 +1364,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var environmentId = "environmentId";
             var collectionId = "collectionId";
             var queryId = "queryId";
+            var documentId = "documentId";
+            var crossReference = "crossReference";
+            var relevance = 1;
 
             var result = service.CreateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, documentId: documentId, crossReference: crossReference, relevance: relevance);
 
@@ -1287,8 +1379,11 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             {
                 bodyObject["cross_reference"] = JToken.FromObject(crossReference);
             }
+            if (relevance != null)
+            {
+                bodyObject["relevance"] = JToken.FromObject(relevance);
+            }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples");
@@ -1333,6 +1428,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var collectionId = "collectionId";
             var queryId = "queryId";
             var exampleId = "exampleId";
+            var crossReference = "crossReference";
+            var relevance = 1;
 
             var result = service.UpdateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId, crossReference: crossReference, relevance: relevance);
 
@@ -1341,8 +1438,11 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             {
                 bodyObject["cross_reference"] = JToken.FromObject(crossReference);
             }
+            if (relevance != null)
+            {
+                bodyObject["relevance"] = JToken.FromObject(relevance);
+            }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples/{exampleId}");
@@ -1402,6 +1502,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var type = "type";
+            var data = new EventData();
 
             var result = service.CreateEvent(type: type, data: data);
 
@@ -1415,7 +1517,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["data"] = JToken.FromObject(data);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -1434,8 +1535,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var filter = "filter";
             var query = "query";
-            var count = 1;
-            var offset = 1;
+            long? count = 1;
+            long? offset = 1;
             var sort = new List<string>() { "sort0", "sort1" };
 
             var result = service.QueryLog(filter: filter, query: query, count: count, offset: offset, sort: sort);
@@ -1455,8 +1556,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var startTime = DateTime.MaxValue;
-            var endTime = DateTime.MaxValue;
+            DateTime? startTime = DateTime.MaxValue;
+            DateTime? endTime = DateTime.MaxValue;
             var resultType = "resultType";
 
             var result = service.GetMetricsQuery(startTime: startTime, endTime: endTime, resultType: resultType);
@@ -1476,8 +1577,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var startTime = DateTime.MaxValue;
-            var endTime = DateTime.MaxValue;
+            DateTime? startTime = DateTime.MaxValue;
+            DateTime? endTime = DateTime.MaxValue;
             var resultType = "resultType";
 
             var result = service.GetMetricsQueryEvent(startTime: startTime, endTime: endTime, resultType: resultType);
@@ -1497,8 +1598,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var startTime = DateTime.MaxValue;
-            var endTime = DateTime.MaxValue;
+            DateTime? startTime = DateTime.MaxValue;
+            DateTime? endTime = DateTime.MaxValue;
             var resultType = "resultType";
 
             var result = service.GetMetricsQueryNoResults(startTime: startTime, endTime: endTime, resultType: resultType);
@@ -1518,8 +1619,8 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var startTime = DateTime.MaxValue;
-            var endTime = DateTime.MaxValue;
+            DateTime? startTime = DateTime.MaxValue;
+            DateTime? endTime = DateTime.MaxValue;
             var resultType = "resultType";
 
             var result = service.GetMetricsEventRate(startTime: startTime, endTime: endTime, resultType: resultType);
@@ -1539,7 +1640,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var count = 1;
+            long? count = 1;
 
             var result = service.GetMetricsQueryTokenEvent(count: count);
 
@@ -1579,6 +1680,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var sourceType = "sourceType";
+            var credentialDetails = new CredentialDetails();
+            var status = "status";
 
             var result = service.CreateCredentials(environmentId: environmentId, sourceType: sourceType, credentialDetails: credentialDetails, status: status);
 
@@ -1596,7 +1700,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["status"] = JToken.FromObject(status);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials");
@@ -1637,6 +1740,9 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             var environmentId = "environmentId";
             var credentialId = "credentialId";
+            var sourceType = "sourceType";
+            var credentialDetails = new CredentialDetails();
+            var status = "status";
 
             var result = service.UpdateCredentials(environmentId: environmentId, credentialId: credentialId, sourceType: sourceType, credentialDetails: credentialDetails, status: status);
 
@@ -1654,7 +1760,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["status"] = JToken.FromObject(status);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials/{credentialId}");
@@ -1714,6 +1819,7 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             service.VersionDate = versionDate;
 
             var environmentId = "environmentId";
+            var name = "name";
 
             var result = service.CreateGateway(environmentId: environmentId, name: name);
 
@@ -1723,7 +1829,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
                 bodyObject["name"] = JToken.FromObject(name);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/gateways");

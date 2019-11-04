@@ -101,6 +101,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var input = new MessageInput();
+            var intents = new List<RuntimeIntent>();
+            var entities = new List<RuntimeEntity>();
+            var alternateIntents = false;
+            var context = new Context();
+            var output = new OutputData();
             var nodesVisitedDetails = false;
 
             var result = service.Message(workspaceId: workspaceId, input: input, intents: intents, entities: entities, alternateIntents: alternateIntents, context: context, output: output, nodesVisitedDetails: nodesVisitedDetails);
@@ -128,7 +134,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["output"] = JToken.FromObject(output);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/message");
@@ -146,7 +151,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -168,6 +173,17 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var name = "name";
+            var description = "description";
+            var language = "language";
+            var metadata = new Dictionary<string, object>();
+            metadata.Add("metadata", new object());
+            var learningOptOut = false;
+            var systemSettings = new WorkspaceSystemSettings();
+            var intents = new List<CreateIntent>();
+            var entities = new List<CreateEntity>();
+            var dialogNodes = new List<DialogNode>();
+            var counterexamples = new List<Counterexample>();
 
             var result = service.CreateWorkspace(name: name, description: description, language: language, metadata: metadata, learningOptOut: learningOptOut, systemSettings: systemSettings, intents: intents, entities: entities, dialogNodes: dialogNodes, counterexamples: counterexamples);
 
@@ -210,7 +226,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["counterexamples"] = JToken.FromObject(counterexamples);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
@@ -251,6 +266,17 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var name = "name";
+            var description = "description";
+            var language = "language";
+            var metadata = new Dictionary<string, object>();
+            metadata.Add("metadata", new object());
+            var learningOptOut = false;
+            var systemSettings = new WorkspaceSystemSettings();
+            var intents = new List<CreateIntent>();
+            var entities = new List<CreateEntity>();
+            var dialogNodes = new List<DialogNode>();
+            var counterexamples = new List<Counterexample>();
             var append = false;
 
             var result = service.UpdateWorkspace(workspaceId: workspaceId, name: name, description: description, language: language, metadata: metadata, learningOptOut: learningOptOut, systemSettings: systemSettings, intents: intents, entities: entities, dialogNodes: dialogNodes, counterexamples: counterexamples, append: append);
@@ -294,7 +320,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["counterexamples"] = JToken.FromObject(counterexamples);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}");
@@ -334,7 +359,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var export = false;
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -358,6 +383,9 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var intent = "intent";
+            var description = "description";
+            var examples = new List<Example>();
 
             var result = service.CreateIntent(workspaceId: workspaceId, intent: intent, description: description, examples: examples);
 
@@ -375,7 +403,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["examples"] = JToken.FromObject(examples);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents");
@@ -418,6 +445,9 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var intent = "intent";
+            var newIntent = "newIntent";
+            var newDescription = "newDescription";
+            var newExamples = new List<Example>();
 
             var result = service.UpdateIntent(workspaceId: workspaceId, intent: intent, newIntent: newIntent, newDescription: newDescription, newExamples: newExamples);
 
@@ -435,7 +465,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["examples"] = JToken.FromObject(newExamples);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}");
@@ -476,7 +505,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var intent = "intent";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -501,6 +530,8 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var intent = "intent";
+            var text = "text";
+            var mentions = new List<Mention>();
 
             var result = service.CreateExample(workspaceId: workspaceId, intent: intent, text: text, mentions: mentions);
 
@@ -514,7 +545,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["mentions"] = JToken.FromObject(mentions);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples");
@@ -558,6 +588,8 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var intent = "intent";
             var text = "text";
+            var newText = "newText";
+            var newMentions = new List<Mention>();
 
             var result = service.UpdateExample(workspaceId: workspaceId, intent: intent, text: text, newText: newText, newMentions: newMentions);
 
@@ -571,7 +603,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["mentions"] = JToken.FromObject(newMentions);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples/{text}");
@@ -612,7 +643,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -636,6 +667,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var text = "text";
 
             var result = service.CreateCounterexample(workspaceId: workspaceId, text: text);
 
@@ -645,7 +677,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["text"] = JToken.FromObject(text);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples");
@@ -687,6 +718,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var text = "text";
+            var newText = "newText";
 
             var result = service.UpdateCounterexample(workspaceId: workspaceId, text: text, newText: newText);
 
@@ -696,7 +728,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["text"] = JToken.FromObject(newText);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples/{text}");
@@ -737,7 +768,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var export = false;
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -761,6 +792,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var entity = "entity";
+            var description = "description";
+            var metadata = new Dictionary<string, object>();
+            metadata.Add("metadata", new object());
+            var fuzzyMatch = false;
+            var values = new List<CreateValue>();
 
             var result = service.CreateEntity(workspaceId: workspaceId, entity: entity, description: description, metadata: metadata, fuzzyMatch: fuzzyMatch, values: values);
 
@@ -783,7 +820,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["values"] = JToken.FromObject(values);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities");
@@ -826,6 +862,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var entity = "entity";
+            var newEntity = "newEntity";
+            var newDescription = "newDescription";
+            var newMetadata = new Dictionary<string, object>();
+            newMetadata.Add("newMetadata", new object());
+            var newFuzzyMatch = false;
+            var newValues = new List<CreateValue>();
 
             var result = service.UpdateEntity(workspaceId: workspaceId, entity: entity, newEntity: newEntity, newDescription: newDescription, newMetadata: newMetadata, newFuzzyMatch: newFuzzyMatch, newValues: newValues);
 
@@ -848,7 +890,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["values"] = JToken.FromObject(newValues);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}");
@@ -913,7 +954,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var export = false;
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -938,6 +979,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var entity = "entity";
+            var value = "value";
+            var metadata = new Dictionary<string, object>();
+            metadata.Add("metadata", new object());
+            var type = "type";
+            var synonyms = new List<string>();
+            var patterns = new List<string>();
 
             var result = service.CreateValue(workspaceId: workspaceId, entity: entity, value: value, metadata: metadata, type: type, synonyms: synonyms, patterns: patterns);
 
@@ -963,7 +1010,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["patterns"] = JToken.FromObject(patterns);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values");
@@ -1008,6 +1054,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var value = "value";
+            var newValue = "newValue";
+            var newMetadata = new Dictionary<string, object>();
+            newMetadata.Add("newMetadata", new object());
+            var newType = "newType";
+            var newSynonyms = new List<string>();
+            var newPatterns = new List<string>();
 
             var result = service.UpdateValue(workspaceId: workspaceId, entity: entity, value: value, newValue: newValue, newMetadata: newMetadata, newType: newType, newSynonyms: newSynonyms, newPatterns: newPatterns);
 
@@ -1033,7 +1085,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["patterns"] = JToken.FromObject(newPatterns);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}");
@@ -1076,7 +1127,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var value = "value";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -1102,6 +1153,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var entity = "entity";
             var value = "value";
+            var synonym = "synonym";
 
             var result = service.CreateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
 
@@ -1111,7 +1163,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["synonym"] = JToken.FromObject(synonym);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms");
@@ -1157,6 +1208,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var entity = "entity";
             var value = "value";
             var synonym = "synonym";
+            var newSynonym = "newSynonym";
 
             var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
 
@@ -1166,7 +1218,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["synonym"] = JToken.FromObject(newSynonym);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms/{synonym}");
@@ -1208,7 +1259,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var sort = "sort";
             var cursor = "cursor";
             var includeAudit = false;
@@ -1232,6 +1283,26 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             service.VersionDate = versionDate;
 
             var workspaceId = "workspaceId";
+            var dialogNode = "dialogNode";
+            var description = "description";
+            var conditions = "conditions";
+            var parent = "parent";
+            var previousSibling = "previousSibling";
+            var output = new DialogNodeOutput();
+            var context = new Dictionary<string, object>();
+            context.Add("context", new object());
+            var metadata = new Dictionary<string, object>();
+            metadata.Add("metadata", new object());
+            var nextStep = new DialogNodeNextStep();
+            var title = "title";
+            var type = "type";
+            var eventName = "eventName";
+            var variable = "variable";
+            var actions = new List<DialogNodeAction>();
+            var digressIn = "digressIn";
+            var digressOut = "digressOut";
+            var digressOutSlots = "digressOutSlots";
+            var userLabel = "userLabel";
 
             var result = service.CreateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, description: description, conditions: conditions, parent: parent, previousSibling: previousSibling, output: output, context: context, metadata: metadata, nextStep: nextStep, title: title, type: type, eventName: eventName, variable: variable, actions: actions, digressIn: digressIn, digressOut: digressOut, digressOutSlots: digressOutSlots, userLabel: userLabel);
 
@@ -1309,7 +1380,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["user_label"] = JToken.FromObject(userLabel);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes");
@@ -1351,6 +1421,26 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var workspaceId = "workspaceId";
             var dialogNode = "dialogNode";
+            var newDialogNode = "newDialogNode";
+            var newDescription = "newDescription";
+            var newConditions = "newConditions";
+            var newParent = "newParent";
+            var newPreviousSibling = "newPreviousSibling";
+            var newOutput = new DialogNodeOutput();
+            var newContext = new Dictionary<string, object>();
+            newContext.Add("newContext", new object());
+            var newMetadata = new Dictionary<string, object>();
+            newMetadata.Add("newMetadata", new object());
+            var newNextStep = new DialogNodeNextStep();
+            var newTitle = "newTitle";
+            var newType = "newType";
+            var newEventName = "newEventName";
+            var newVariable = "newVariable";
+            var newActions = new List<DialogNodeAction>();
+            var newDigressIn = "newDigressIn";
+            var newDigressOut = "newDigressOut";
+            var newDigressOutSlots = "newDigressOutSlots";
+            var newUserLabel = "newUserLabel";
 
             var result = service.UpdateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, newDialogNode: newDialogNode, newDescription: newDescription, newConditions: newConditions, newParent: newParent, newPreviousSibling: newPreviousSibling, newOutput: newOutput, newContext: newContext, newMetadata: newMetadata, newNextStep: newNextStep, newTitle: newTitle, newType: newType, newEventName: newEventName, newVariable: newVariable, newActions: newActions, newDigressIn: newDigressIn, newDigressOut: newDigressOut, newDigressOutSlots: newDigressOutSlots, newUserLabel: newUserLabel);
 
@@ -1428,7 +1518,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
                 bodyObject["user_label"] = JToken.FromObject(newUserLabel);
             }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes/{dialogNode}");
@@ -1470,7 +1559,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             var workspaceId = "workspaceId";
             var sort = "sort";
             var filter = "filter";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var cursor = "cursor";
 
             var result = service.ListLogs(workspaceId: workspaceId, sort: sort, filter: filter, pageLimit: pageLimit, cursor: cursor);
@@ -1493,7 +1582,7 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             var filter = "filter";
             var sort = "sort";
-            var pageLimit = 1;
+            long? pageLimit = 1;
             var cursor = "cursor";
 
             var result = service.ListAllLogs(filter: filter, sort: sort, pageLimit: pageLimit, cursor: cursor);

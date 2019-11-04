@@ -100,6 +100,16 @@ namespace IBM.Watson.NaturalLanguageUnderstanding.v1.UnitTests
             var versionDate = "versionDate";
             service.VersionDate = versionDate;
 
+            var features = new Features();
+            var text = "text";
+            var html = "html";
+            var url = "url";
+            var clean = false;
+            var xpath = "xpath";
+            var fallbackToRaw = false;
+            var returnAnalyzedText = false;
+            var language = "language";
+            var limitTextCharacters = 1;
 
             var result = service.Analyze(features: features, text: text, html: html, url: url, clean: clean, xpath: xpath, fallbackToRaw: fallbackToRaw, returnAnalyzedText: returnAnalyzedText, language: language, limitTextCharacters: limitTextCharacters);
 
@@ -131,8 +141,11 @@ namespace IBM.Watson.NaturalLanguageUnderstanding.v1.UnitTests
             {
                 bodyObject["language"] = JToken.FromObject(language);
             }
+            if (limitTextCharacters != null)
+            {
+                bodyObject["limit_text_characters"] = JToken.FromObject(limitTextCharacters);
+            }
             var json = JsonConvert.SerializeObject(bodyObject);
-
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
