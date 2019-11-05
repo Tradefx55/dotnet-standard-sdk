@@ -139,6 +139,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/message");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Message_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.Message(workspaceId: workspaceId, input: input, intents: intents, entities: entities, alternateIntents: alternateIntents, context: context, output: output, nodesVisitedDetails: nodesVisitedDetails);
+    }
         [TestMethod]
         public void ListWorkspaces_Success()
         {
@@ -160,7 +167,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void CreateWorkspace_Success()
         {
@@ -229,7 +235,6 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void GetWorkspace_Success()
         {
@@ -253,6 +258,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetWorkspace_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetWorkspace(workspaceId: workspaceId, export: export, includeAudit: includeAudit, sort: sort);
+    }
         [TestMethod]
         public void UpdateWorkspace_Success()
         {
@@ -325,6 +337,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateWorkspace_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateWorkspace(workspaceId: workspaceId, name: name, description: description, language: language, metadata: metadata, learningOptOut: learningOptOut, systemSettings: systemSettings, intents: intents, entities: entities, dialogNodes: dialogNodes, counterexamples: counterexamples, append: append);
+    }
         [TestMethod]
         public void DeleteWorkspace_Success()
         {
@@ -345,6 +364,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteWorkspace_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteWorkspace(workspaceId: workspaceId);
+    }
         [TestMethod]
         public void ListIntents_Success()
         {
@@ -370,6 +396,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListIntents_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListIntents(workspaceId: workspaceId, export: export, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateIntent_Success()
         {
@@ -408,6 +441,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateIntent_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateIntent(workspaceId: workspaceId, intent: intent, description: description, examples: examples);
+    }
         [TestMethod]
         public void GetIntent_Success()
         {
@@ -431,6 +471,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetIntent_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetIntent(workspaceId: workspaceId, intent: intent, export: export, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetIntent_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.GetIntent(workspaceId: workspaceId, intent: intent, export: export, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateIntent_Success()
         {
@@ -470,6 +525,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateIntent_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateIntent(workspaceId: workspaceId, intent: intent, newIntent: newIntent, newDescription: newDescription, newExamples: newExamples);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateIntent_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.UpdateIntent(workspaceId: workspaceId, intent: intent, newIntent: newIntent, newDescription: newDescription, newExamples: newExamples);
+    }
         [TestMethod]
         public void DeleteIntent_Success()
         {
@@ -491,6 +561,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteIntent_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteIntent(workspaceId: workspaceId, intent: intent);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteIntent_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.DeleteIntent(workspaceId: workspaceId, intent: intent);
+    }
         [TestMethod]
         public void ListExamples_Success()
         {
@@ -516,6 +601,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListExamples_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListExamples(workspaceId: workspaceId, intent: intent, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListExamples_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.ListExamples(workspaceId: workspaceId, intent: intent, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateExample_Success()
         {
@@ -550,6 +650,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateExample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateExample(workspaceId: workspaceId, intent: intent, text: text, mentions: mentions);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateExample_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.CreateExample(workspaceId: workspaceId, intent: intent, text: text, mentions: mentions);
+    }
         [TestMethod]
         public void GetExample_Success()
         {
@@ -573,6 +688,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetExample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetExample(workspaceId: workspaceId, intent: intent, text: text, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetExample_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.GetExample(workspaceId: workspaceId, intent: intent, text: text, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetExample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.GetExample(workspaceId: workspaceId, intent: intent, text: text, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateExample_Success()
         {
@@ -608,6 +746,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateExample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateExample(workspaceId: workspaceId, intent: intent, text: text, newText: newText, newMentions: newMentions);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateExample_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.UpdateExample(workspaceId: workspaceId, intent: intent, text: text, newText: newText, newMentions: newMentions);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateExample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.UpdateExample(workspaceId: workspaceId, intent: intent, text: text, newText: newText, newMentions: newMentions);
+    }
         [TestMethod]
         public void DeleteExample_Success()
         {
@@ -630,6 +791,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/intents/{intent}/examples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteExample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteExample(workspaceId: workspaceId, intent: intent, text: text);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteExample_NoIntent()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var intent = null;
+        var result = service.DeleteExample(workspaceId: workspaceId, intent: intent, text: text);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteExample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.DeleteExample(workspaceId: workspaceId, intent: intent, text: text);
+    }
         [TestMethod]
         public void ListCounterexamples_Success()
         {
@@ -654,6 +838,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCounterexamples_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListCounterexamples(workspaceId: workspaceId, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateCounterexample_Success()
         {
@@ -682,6 +873,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateCounterexample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateCounterexample(workspaceId: workspaceId, text: text);
+    }
         [TestMethod]
         public void GetCounterexample_Success()
         {
@@ -704,6 +902,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCounterexample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetCounterexample(workspaceId: workspaceId, text: text, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCounterexample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.GetCounterexample(workspaceId: workspaceId, text: text, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateCounterexample_Success()
         {
@@ -733,6 +946,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCounterexample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateCounterexample(workspaceId: workspaceId, text: text, newText: newText);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCounterexample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.UpdateCounterexample(workspaceId: workspaceId, text: text, newText: newText);
+    }
         [TestMethod]
         public void DeleteCounterexample_Success()
         {
@@ -754,6 +982,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/counterexamples/{text}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCounterexample_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteCounterexample(workspaceId: workspaceId, text: text);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCounterexample_NoText()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var text = null;
+        var result = service.DeleteCounterexample(workspaceId: workspaceId, text: text);
+    }
         [TestMethod]
         public void ListEntities_Success()
         {
@@ -779,6 +1022,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListEntities_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListEntities(workspaceId: workspaceId, export: export, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateEntity_Success()
         {
@@ -825,6 +1075,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateEntity_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateEntity(workspaceId: workspaceId, entity: entity, description: description, metadata: metadata, fuzzyMatch: fuzzyMatch, values: values);
+    }
         [TestMethod]
         public void GetEntity_Success()
         {
@@ -848,6 +1105,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetEntity_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetEntity(workspaceId: workspaceId, entity: entity, export: export, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetEntity_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.GetEntity(workspaceId: workspaceId, entity: entity, export: export, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateEntity_Success()
         {
@@ -895,6 +1167,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateEntity_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateEntity(workspaceId: workspaceId, entity: entity, newEntity: newEntity, newDescription: newDescription, newMetadata: newMetadata, newFuzzyMatch: newFuzzyMatch, newValues: newValues);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateEntity_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.UpdateEntity(workspaceId: workspaceId, entity: entity, newEntity: newEntity, newDescription: newDescription, newMetadata: newMetadata, newFuzzyMatch: newFuzzyMatch, newValues: newValues);
+    }
         [TestMethod]
         public void DeleteEntity_Success()
         {
@@ -916,6 +1203,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteEntity_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteEntity(workspaceId: workspaceId, entity: entity);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteEntity_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.DeleteEntity(workspaceId: workspaceId, entity: entity);
+    }
         [TestMethod]
         public void ListMentions_Success()
         {
@@ -939,6 +1241,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/mentions");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListMentions_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListMentions(workspaceId: workspaceId, entity: entity, export: export, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListMentions_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.ListMentions(workspaceId: workspaceId, entity: entity, export: export, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void ListValues_Success()
         {
@@ -965,6 +1282,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListValues_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListValues(workspaceId: workspaceId, entity: entity, export: export, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListValues_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.ListValues(workspaceId: workspaceId, entity: entity, export: export, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateValue_Success()
         {
@@ -1015,6 +1347,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateValue_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateValue(workspaceId: workspaceId, entity: entity, value: value, metadata: metadata, type: type, synonyms: synonyms, patterns: patterns);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateValue_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.CreateValue(workspaceId: workspaceId, entity: entity, value: value, metadata: metadata, type: type, synonyms: synonyms, patterns: patterns);
+    }
         [TestMethod]
         public void GetValue_Success()
         {
@@ -1039,6 +1386,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetValue_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetValue(workspaceId: workspaceId, entity: entity, value: value, export: export, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetValue_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.GetValue(workspaceId: workspaceId, entity: entity, value: value, export: export, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetValue_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.GetValue(workspaceId: workspaceId, entity: entity, value: value, export: export, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateValue_Success()
         {
@@ -1090,6 +1460,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateValue_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateValue(workspaceId: workspaceId, entity: entity, value: value, newValue: newValue, newMetadata: newMetadata, newType: newType, newSynonyms: newSynonyms, newPatterns: newPatterns);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateValue_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.UpdateValue(workspaceId: workspaceId, entity: entity, value: value, newValue: newValue, newMetadata: newMetadata, newType: newType, newSynonyms: newSynonyms, newPatterns: newPatterns);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateValue_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.UpdateValue(workspaceId: workspaceId, entity: entity, value: value, newValue: newValue, newMetadata: newMetadata, newType: newType, newSynonyms: newSynonyms, newPatterns: newPatterns);
+    }
         [TestMethod]
         public void DeleteValue_Success()
         {
@@ -1112,6 +1505,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteValue_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteValue(workspaceId: workspaceId, entity: entity, value: value);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteValue_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.DeleteValue(workspaceId: workspaceId, entity: entity, value: value);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteValue_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.DeleteValue(workspaceId: workspaceId, entity: entity, value: value);
+    }
         [TestMethod]
         public void ListSynonyms_Success()
         {
@@ -1138,6 +1554,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListSynonyms_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListSynonyms(workspaceId: workspaceId, entity: entity, value: value, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListSynonyms_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.ListSynonyms(workspaceId: workspaceId, entity: entity, value: value, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListSynonyms_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.ListSynonyms(workspaceId: workspaceId, entity: entity, value: value, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateSynonym_Success()
         {
@@ -1168,6 +1607,29 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateSynonym_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateSynonym_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.CreateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateSynonym_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.CreateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
         [TestMethod]
         public void GetSynonym_Success()
         {
@@ -1192,6 +1654,37 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms/{synonym}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetSynonym_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetSynonym_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.GetSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetSynonym_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.GetSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetSynonym_NoSynonym()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var synonym = null;
+        var result = service.GetSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateSynonym_Success()
         {
@@ -1223,6 +1716,37 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms/{synonym}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateSynonym_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateSynonym_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateSynonym_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateSynonym_NoSynonym()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var synonym = null;
+        var result = service.UpdateSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym, newSynonym: newSynonym);
+    }
         [TestMethod]
         public void DeleteSynonym_Success()
         {
@@ -1246,6 +1770,37 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/entities/{entity}/values/{value}/synonyms/{synonym}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSynonym_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSynonym_NoEntity()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var entity = null;
+        var result = service.DeleteSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSynonym_NoValue()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var value = null;
+        var result = service.DeleteSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSynonym_NoSynonym()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var synonym = null;
+        var result = service.DeleteSynonym(workspaceId: workspaceId, entity: entity, value: value, synonym: synonym);
+    }
         [TestMethod]
         public void ListDialogNodes_Success()
         {
@@ -1270,6 +1825,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListDialogNodes_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListDialogNodes(workspaceId: workspaceId, pageLimit: pageLimit, sort: sort, cursor: cursor, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void CreateDialogNode_Success()
         {
@@ -1385,6 +1947,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateDialogNode_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.CreateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, description: description, conditions: conditions, parent: parent, previousSibling: previousSibling, output: output, context: context, metadata: metadata, nextStep: nextStep, title: title, type: type, eventName: eventName, variable: variable, actions: actions, digressIn: digressIn, digressOut: digressOut, digressOutSlots: digressOutSlots, userLabel: userLabel);
+    }
         [TestMethod]
         public void GetDialogNode_Success()
         {
@@ -1407,6 +1976,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes/{dialogNode}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDialogNode_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.GetDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, includeAudit: includeAudit);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDialogNode_NoDialogNode()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var dialogNode = null;
+        var result = service.GetDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, includeAudit: includeAudit);
+    }
         [TestMethod]
         public void UpdateDialogNode_Success()
         {
@@ -1523,6 +2107,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes/{dialogNode}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateDialogNode_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.UpdateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, newDialogNode: newDialogNode, newDescription: newDescription, newConditions: newConditions, newParent: newParent, newPreviousSibling: newPreviousSibling, newOutput: newOutput, newContext: newContext, newMetadata: newMetadata, newNextStep: newNextStep, newTitle: newTitle, newType: newType, newEventName: newEventName, newVariable: newVariable, newActions: newActions, newDigressIn: newDigressIn, newDigressOut: newDigressOut, newDigressOutSlots: newDigressOutSlots, newUserLabel: newUserLabel);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateDialogNode_NoDialogNode()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var dialogNode = null;
+        var result = service.UpdateDialogNode(workspaceId: workspaceId, dialogNode: dialogNode, newDialogNode: newDialogNode, newDescription: newDescription, newConditions: newConditions, newParent: newParent, newPreviousSibling: newPreviousSibling, newOutput: newOutput, newContext: newContext, newMetadata: newMetadata, newNextStep: newNextStep, newTitle: newTitle, newType: newType, newEventName: newEventName, newVariable: newVariable, newActions: newActions, newDigressIn: newDigressIn, newDigressOut: newDigressOut, newDigressOutSlots: newDigressOutSlots, newUserLabel: newUserLabel);
+    }
         [TestMethod]
         public void DeleteDialogNode_Success()
         {
@@ -1544,6 +2143,21 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/dialog_nodes/{dialogNode}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDialogNode_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.DeleteDialogNode(workspaceId: workspaceId, dialogNode: dialogNode);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDialogNode_NoDialogNode()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var dialogNode = null;
+        var result = service.DeleteDialogNode(workspaceId: workspaceId, dialogNode: dialogNode);
+    }
         [TestMethod]
         public void ListLogs_Success()
         {
@@ -1568,6 +2182,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/workspaces/{workspaceId}/logs");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListLogs_NoWorkspaceId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var workspaceId = null;
+        var result = service.ListLogs(workspaceId: workspaceId, sort: sort, filter: filter, pageLimit: pageLimit, cursor: cursor);
+    }
         [TestMethod]
         public void ListAllLogs_Success()
         {
@@ -1590,6 +2211,13 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListAllLogs_NoFilter()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        string filter = null;
+        var result = service.ListAllLogs(filter: filter, sort: sort, pageLimit: pageLimit, cursor: cursor);
+    }
         [TestMethod]
         public void DeleteUserData_Success()
         {
@@ -1609,5 +2237,12 @@ namespace IBM.Watson.Assistant.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteUserData_NoCustomerId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        string customerId = null;
+        var result = service.DeleteUserData(customerId: customerId);
+    }
     }
 }

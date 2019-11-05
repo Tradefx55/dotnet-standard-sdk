@@ -124,7 +124,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListEnvironments_Success()
         {
@@ -143,7 +142,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetEnvironment_Success()
         {
@@ -164,6 +162,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetEnvironment_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetEnvironment(environmentId: environmentId);
+    }
         [TestMethod]
         public void UpdateEnvironment_Success()
         {
@@ -202,6 +207,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateEnvironment_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateEnvironment(environmentId: environmentId, name: name, description: description, size: size);
+    }
         [TestMethod]
         public void DeleteEnvironment_Success()
         {
@@ -222,6 +234,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteEnvironment_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteEnvironment(environmentId: environmentId);
+    }
         [TestMethod]
         public void ListFields_Success()
         {
@@ -243,6 +262,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/fields");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListFields_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListFields(environmentId: environmentId, collectionIds: collectionIds);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListFields_NoCollectionIds()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        List<string> collectionIds = null;
+        var result = service.ListFields(environmentId: environmentId, collectionIds: collectionIds);
+    }
         [TestMethod]
         public void CreateConfiguration_Success()
         {
@@ -296,6 +330,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateConfiguration_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateConfiguration(environmentId: environmentId, name: name, description: description, conversions: conversions, enrichments: enrichments, normalizations: normalizations, source: source);
+    }
         [TestMethod]
         public void ListConfigurations_Success()
         {
@@ -317,6 +358,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListConfigurations_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListConfigurations(environmentId: environmentId, name: name);
+    }
         [TestMethod]
         public void GetConfiguration_Success()
         {
@@ -338,6 +386,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations/{configurationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetConfiguration_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetConfiguration(environmentId: environmentId, configurationId: configurationId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetConfiguration_NoConfigurationId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var configurationId = null;
+        var result = service.GetConfiguration(environmentId: environmentId, configurationId: configurationId);
+    }
         [TestMethod]
         public void UpdateConfiguration_Success()
         {
@@ -392,6 +455,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations/{configurationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateConfiguration_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateConfiguration(environmentId: environmentId, configurationId: configurationId, name: name, description: description, conversions: conversions, enrichments: enrichments, normalizations: normalizations, source: source);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateConfiguration_NoConfigurationId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var configurationId = null;
+        var result = service.UpdateConfiguration(environmentId: environmentId, configurationId: configurationId, name: name, description: description, conversions: conversions, enrichments: enrichments, normalizations: normalizations, source: source);
+    }
         [TestMethod]
         public void DeleteConfiguration_Success()
         {
@@ -413,6 +491,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/configurations/{configurationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteConfiguration_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteConfiguration(environmentId: environmentId, configurationId: configurationId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteConfiguration_NoConfigurationId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var configurationId = null;
+        var result = service.DeleteConfiguration(environmentId: environmentId, configurationId: configurationId);
+    }
         [TestMethod]
         public void CreateCollection_Success()
         {
@@ -456,6 +549,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateCollection_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateCollection(environmentId: environmentId, name: name, description: description, configurationId: configurationId, language: language);
+    }
         [TestMethod]
         public void ListCollections_Success()
         {
@@ -477,6 +577,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCollections_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListCollections(environmentId: environmentId, name: name);
+    }
         [TestMethod]
         public void GetCollection_Success()
         {
@@ -498,6 +605,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCollection_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetCollection(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCollection_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetCollection(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void UpdateCollection_Success()
         {
@@ -537,6 +659,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCollection_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateCollection(environmentId: environmentId, collectionId: collectionId, name: name, description: description, configurationId: configurationId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCollection_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.UpdateCollection(environmentId: environmentId, collectionId: collectionId, name: name, description: description, configurationId: configurationId);
+    }
         [TestMethod]
         public void DeleteCollection_Success()
         {
@@ -558,6 +695,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCollection_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteCollection(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCollection_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteCollection(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void ListCollectionFields_Success()
         {
@@ -579,6 +731,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/fields");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCollectionFields_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListCollectionFields(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCollectionFields_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.ListCollectionFields(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void ListExpansions_Success()
         {
@@ -600,6 +767,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/expansions");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListExpansions_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListExpansions(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListExpansions_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.ListExpansions(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void CreateExpansions_Success()
         {
@@ -629,6 +811,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/expansions");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateExpansions_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateExpansions(environmentId: environmentId, collectionId: collectionId, expansions: expansions);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateExpansions_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.CreateExpansions(environmentId: environmentId, collectionId: collectionId, expansions: expansions);
+    }
         [TestMethod]
         public void DeleteExpansions_Success()
         {
@@ -650,6 +847,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/expansions");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteExpansions_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteExpansions(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteExpansions_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteExpansions(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void GetTokenizationDictionaryStatus_Success()
         {
@@ -671,6 +883,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/tokenization_dictionary");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTokenizationDictionaryStatus_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetTokenizationDictionaryStatus(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTokenizationDictionaryStatus_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetTokenizationDictionaryStatus(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void CreateTokenizationDictionary_Success()
         {
@@ -700,6 +927,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/tokenization_dictionary");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateTokenizationDictionary_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateTokenizationDictionary(environmentId: environmentId, collectionId: collectionId, tokenizationRules: tokenizationRules);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateTokenizationDictionary_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.CreateTokenizationDictionary(environmentId: environmentId, collectionId: collectionId, tokenizationRules: tokenizationRules);
+    }
         [TestMethod]
         public void DeleteTokenizationDictionary_Success()
         {
@@ -721,6 +963,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/tokenization_dictionary");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTokenizationDictionary_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteTokenizationDictionary(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTokenizationDictionary_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteTokenizationDictionary(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void GetStopwordListStatus_Success()
         {
@@ -742,6 +999,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/stopwords");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetStopwordListStatus_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetStopwordListStatus(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetStopwordListStatus_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetStopwordListStatus(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void CreateStopwordList_Success()
         {
@@ -766,6 +1038,37 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateStopwordList_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateStopwordList(environmentId: environmentId, collectionId: collectionId, stopwordFile: stopwordFile, stopwordFilename: stopwordFilename);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateStopwordList_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.CreateStopwordList(environmentId: environmentId, collectionId: collectionId, stopwordFile: stopwordFile, stopwordFilename: stopwordFilename);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateStopwordList_NoStopwordFile()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream stopwordFile = null;
+        var result = service.CreateStopwordList(environmentId: environmentId, collectionId: collectionId, stopwordFile: stopwordFile, stopwordFilename: stopwordFilename);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateStopwordList_NoStopwordFilename()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        string stopwordFilename = null;
+        var result = service.CreateStopwordList(environmentId: environmentId, collectionId: collectionId, stopwordFile: stopwordFile, stopwordFilename: stopwordFilename);
+    }
         [TestMethod]
         public void DeleteStopwordList_Success()
         {
@@ -787,6 +1090,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/word_lists/stopwords");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteStopwordList_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteStopwordList(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteStopwordList_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteStopwordList(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void AddDocument_Success()
         {
@@ -813,6 +1131,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddDocument_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.AddDocument(environmentId: environmentId, collectionId: collectionId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddDocument_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.AddDocument(environmentId: environmentId, collectionId: collectionId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
+    }
         [TestMethod]
         public void GetDocumentStatus_Success()
         {
@@ -835,6 +1168,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/documents/{documentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDocumentStatus_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetDocumentStatus(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDocumentStatus_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetDocumentStatus(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDocumentStatus_NoDocumentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.GetDocumentStatus(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
         [TestMethod]
         public void UpdateDocument_Success()
         {
@@ -862,6 +1218,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateDocument_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateDocument_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.UpdateDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateDocument_NoDocumentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.UpdateDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId, file: file, filename: filename, fileContentType: fileContentType, metadata: metadata);
+    }
         [TestMethod]
         public void DeleteDocument_Success()
         {
@@ -884,6 +1263,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/documents/{documentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDocument_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDocument_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDocument_NoDocumentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.DeleteDocument(environmentId: environmentId, collectionId: collectionId, documentId: documentId);
+    }
         [TestMethod]
         public void Query_Success()
         {
@@ -994,6 +1396,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/query");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Query_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.Query(environmentId: environmentId, collectionId: collectionId, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicate: deduplicate, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields, bias: bias, spellingSuggestions: spellingSuggestions, xWatsonLoggingOptOut: xWatsonLoggingOptOut);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Query_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.Query(environmentId: environmentId, collectionId: collectionId, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicate: deduplicate, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields, bias: bias, spellingSuggestions: spellingSuggestions, xWatsonLoggingOptOut: xWatsonLoggingOptOut);
+    }
         [TestMethod]
         public void QueryNotices_Success()
         {
@@ -1032,6 +1449,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/notices");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void QueryNotices_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.QueryNotices(environmentId: environmentId, collectionId: collectionId, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void QueryNotices_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.QueryNotices(environmentId: environmentId, collectionId: collectionId, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields);
+    }
         [TestMethod]
         public void FederatedQuery_Success()
         {
@@ -1144,6 +1576,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/query");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void FederatedQuery_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.FederatedQuery(environmentId: environmentId, collectionIds: collectionIds, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, passages: passages, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, passagesFields: passagesFields, passagesCount: passagesCount, passagesCharacters: passagesCharacters, deduplicate: deduplicate, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields, bias: bias, xWatsonLoggingOptOut: xWatsonLoggingOptOut);
+    }
         [TestMethod]
         public void FederatedQueryNotices_Success()
         {
@@ -1178,6 +1617,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/notices");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void FederatedQueryNotices_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.FederatedQueryNotices(environmentId: environmentId, collectionIds: collectionIds, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void FederatedQueryNotices_NoCollectionIds()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        List<string> collectionIds = null;
+        var result = service.FederatedQueryNotices(environmentId: environmentId, collectionIds: collectionIds, filter: filter, query: query, naturalLanguageQuery: naturalLanguageQuery, aggregation: aggregation, count: count, _return: _return, offset: offset, sort: sort, highlight: highlight, deduplicateField: deduplicateField, similar: similar, similarDocumentIds: similarDocumentIds, similarFields: similarFields);
+    }
         [TestMethod]
         public void GetAutocompletion_Success()
         {
@@ -1202,6 +1656,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/autocompletion");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAutocompletion_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetAutocompletion(environmentId: environmentId, collectionId: collectionId, prefix: prefix, field: field, count: count);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAutocompletion_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetAutocompletion(environmentId: environmentId, collectionId: collectionId, prefix: prefix, field: field, count: count);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAutocompletion_NoPrefix()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        string prefix = null;
+        var result = service.GetAutocompletion(environmentId: environmentId, collectionId: collectionId, prefix: prefix, field: field, count: count);
+    }
         [TestMethod]
         public void ListTrainingData_Success()
         {
@@ -1223,6 +1700,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListTrainingData_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListTrainingData(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListTrainingData_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.ListTrainingData(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void AddTrainingData_Success()
         {
@@ -1262,6 +1754,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddTrainingData_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.AddTrainingData(environmentId: environmentId, collectionId: collectionId, naturalLanguageQuery: naturalLanguageQuery, filter: filter, examples: examples);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddTrainingData_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.AddTrainingData(environmentId: environmentId, collectionId: collectionId, naturalLanguageQuery: naturalLanguageQuery, filter: filter, examples: examples);
+    }
         [TestMethod]
         public void DeleteAllTrainingData_Success()
         {
@@ -1283,6 +1790,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteAllTrainingData_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteAllTrainingData(environmentId: environmentId, collectionId: collectionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteAllTrainingData_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteAllTrainingData(environmentId: environmentId, collectionId: collectionId);
+    }
         [TestMethod]
         public void GetTrainingData_Success()
         {
@@ -1305,6 +1827,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingData_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingData_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingData_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.GetTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
         [TestMethod]
         public void DeleteTrainingData_Success()
         {
@@ -1327,6 +1872,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingData_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingData_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingData_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.DeleteTrainingData(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
         [TestMethod]
         public void ListTrainingExamples_Success()
         {
@@ -1349,6 +1917,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListTrainingExamples_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListTrainingExamples(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListTrainingExamples_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.ListTrainingExamples(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListTrainingExamples_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.ListTrainingExamples(environmentId: environmentId, collectionId: collectionId, queryId: queryId);
+    }
         [TestMethod]
         public void CreateTrainingExample_Success()
         {
@@ -1389,6 +1980,29 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateTrainingExample_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, documentId: documentId, crossReference: crossReference, relevance: relevance);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateTrainingExample_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.CreateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, documentId: documentId, crossReference: crossReference, relevance: relevance);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateTrainingExample_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.CreateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, documentId: documentId, crossReference: crossReference, relevance: relevance);
+    }
         [TestMethod]
         public void DeleteTrainingExample_Success()
         {
@@ -1412,6 +2026,37 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples/{exampleId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingExample_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingExample_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.DeleteTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingExample_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.DeleteTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteTrainingExample_NoExampleId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var exampleId = null;
+        var result = service.DeleteTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
         [TestMethod]
         public void UpdateTrainingExample_Success()
         {
@@ -1448,6 +2093,37 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples/{exampleId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateTrainingExample_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId, crossReference: crossReference, relevance: relevance);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateTrainingExample_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.UpdateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId, crossReference: crossReference, relevance: relevance);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateTrainingExample_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.UpdateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId, crossReference: crossReference, relevance: relevance);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateTrainingExample_NoExampleId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var exampleId = null;
+        var result = service.UpdateTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId, crossReference: crossReference, relevance: relevance);
+    }
         [TestMethod]
         public void GetTrainingExample_Success()
         {
@@ -1471,6 +2147,37 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/collections/{collectionId}/training_data/{queryId}/examples/{exampleId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingExample_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingExample_NoCollectionId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var collectionId = null;
+        var result = service.GetTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingExample_NoQueryId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var queryId = null;
+        var result = service.GetTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTrainingExample_NoExampleId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var exampleId = null;
+        var result = service.GetTrainingExample(environmentId: environmentId, collectionId: collectionId, queryId: queryId, exampleId: exampleId);
+    }
         [TestMethod]
         public void DeleteUserData_Success()
         {
@@ -1490,6 +2197,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteUserData_NoCustomerId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        string customerId = null;
+        var result = service.DeleteUserData(customerId: customerId);
+    }
         [TestMethod]
         public void CreateEvent_Success()
         {
@@ -1520,7 +2234,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void QueryLog_Success()
         {
@@ -1543,7 +2256,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetMetricsQuery_Success()
         {
@@ -1564,7 +2276,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetMetricsQueryEvent_Success()
         {
@@ -1585,7 +2296,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetMetricsQueryNoResults_Success()
         {
@@ -1606,7 +2316,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetMetricsEventRate_Success()
         {
@@ -1627,7 +2336,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetMetricsQueryTokenEvent_Success()
         {
@@ -1646,7 +2354,6 @@ namespace IBM.Watson.Discovery.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void ListCredentials_Success()
         {
@@ -1667,6 +2374,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCredentials_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListCredentials(environmentId: environmentId);
+    }
         [TestMethod]
         public void CreateCredentials_Success()
         {
@@ -1705,6 +2419,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateCredentials_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateCredentials(environmentId: environmentId, sourceType: sourceType, credentialDetails: credentialDetails, status: status);
+    }
         [TestMethod]
         public void GetCredentials_Success()
         {
@@ -1726,6 +2447,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials/{credentialId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCredentials_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetCredentials(environmentId: environmentId, credentialId: credentialId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCredentials_NoCredentialId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var credentialId = null;
+        var result = service.GetCredentials(environmentId: environmentId, credentialId: credentialId);
+    }
         [TestMethod]
         public void UpdateCredentials_Success()
         {
@@ -1765,6 +2501,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials/{credentialId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCredentials_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.UpdateCredentials(environmentId: environmentId, credentialId: credentialId, sourceType: sourceType, credentialDetails: credentialDetails, status: status);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateCredentials_NoCredentialId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var credentialId = null;
+        var result = service.UpdateCredentials(environmentId: environmentId, credentialId: credentialId, sourceType: sourceType, credentialDetails: credentialDetails, status: status);
+    }
         [TestMethod]
         public void DeleteCredentials_Success()
         {
@@ -1786,6 +2537,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/credentials/{credentialId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCredentials_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteCredentials(environmentId: environmentId, credentialId: credentialId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCredentials_NoCredentialId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var credentialId = null;
+        var result = service.DeleteCredentials(environmentId: environmentId, credentialId: credentialId);
+    }
         [TestMethod]
         public void ListGateways_Success()
         {
@@ -1806,6 +2572,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/gateways");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListGateways_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.ListGateways(environmentId: environmentId);
+    }
         [TestMethod]
         public void CreateGateway_Success()
         {
@@ -1834,6 +2607,13 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/gateways");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateGateway_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.CreateGateway(environmentId: environmentId, name: name);
+    }
         [TestMethod]
         public void GetGateway_Success()
         {
@@ -1855,6 +2635,21 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/gateways/{gatewayId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetGateway_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.GetGateway(environmentId: environmentId, gatewayId: gatewayId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetGateway_NoGatewayId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var gatewayId = null;
+        var result = service.GetGateway(environmentId: environmentId, gatewayId: gatewayId);
+    }
         [TestMethod]
         public void DeleteGateway_Success()
         {
@@ -1876,5 +2671,20 @@ namespace IBM.Watson.Discovery.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/environments/{environmentId}/gateways/{gatewayId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteGateway_NoEnvironmentId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var environmentId = null;
+        var result = service.DeleteGateway(environmentId: environmentId, gatewayId: gatewayId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteGateway_NoGatewayId()
+    {
+        DiscoveryService service = new DiscoveryService("versionDate", new NoAuthAuthenticator());
+        var gatewayId = null;
+        var result = service.DeleteGateway(environmentId: environmentId, gatewayId: gatewayId);
+    }
     }
 }

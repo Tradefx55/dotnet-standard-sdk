@@ -149,7 +149,6 @@ namespace IBM.Watson.NaturalLanguageUnderstanding.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListModels_Success()
         {
@@ -167,7 +166,6 @@ namespace IBM.Watson.NaturalLanguageUnderstanding.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void DeleteModel_Success()
         {
@@ -188,5 +186,12 @@ namespace IBM.Watson.NaturalLanguageUnderstanding.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/models/{modelId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteModel_NoModelId()
+    {
+        NaturalLanguageUnderstandingService service = new NaturalLanguageUnderstandingService("versionDate", new NoAuthAuthenticator());
+        var modelId = null;
+        var result = service.DeleteModel(modelId: modelId);
+    }
     }
 }

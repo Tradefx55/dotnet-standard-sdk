@@ -107,6 +107,13 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/classifiers/{classifierId}/classify");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Classify_NoClassifierId()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.Classify(classifierId: classifierId, text: text);
+    }
         [TestMethod]
         public void ClassifyCollection_Success()
         {
@@ -132,6 +139,13 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/classifiers/{classifierId}/classify_collection");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ClassifyCollection_NoClassifierId()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.ClassifyCollection(classifierId: classifierId, collection: collection);
+    }
         [TestMethod]
         public void CreateClassifier_Success()
         {
@@ -150,6 +164,21 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateClassifier_NoTrainingMetadata()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        System.IO.MemoryStream trainingMetadata = null;
+        var result = service.CreateClassifier(trainingMetadata: trainingMetadata, trainingData: trainingData);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateClassifier_NoTrainingData()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        System.IO.MemoryStream trainingData = null;
+        var result = service.CreateClassifier(trainingMetadata: trainingMetadata, trainingData: trainingData);
+    }
         [TestMethod]
         public void ListClassifiers_Success()
         {
@@ -164,7 +193,6 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
             var result = service.ListClassifiers();
 
         }
-
         [TestMethod]
         public void GetClassifier_Success()
         {
@@ -182,6 +210,13 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/classifiers/{classifierId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetClassifier_NoClassifierId()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.GetClassifier(classifierId: classifierId);
+    }
         [TestMethod]
         public void DeleteClassifier_Success()
         {
@@ -199,5 +234,12 @@ namespace IBM.Watson.NaturalLanguageClassifier.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/classifiers/{classifierId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteClassifier_NoClassifierId()
+    {
+        NaturalLanguageClassifierService service = new NaturalLanguageClassifierService(new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.DeleteClassifier(classifierId: classifierId);
+    }
     }
 }

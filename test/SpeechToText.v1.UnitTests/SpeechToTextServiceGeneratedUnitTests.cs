@@ -96,7 +96,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var result = service.ListModels();
 
         }
-
         [TestMethod]
         public void GetModel_Success()
         {
@@ -114,6 +113,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/models/{modelId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetModel_NoModelId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var modelId = null;
+        var result = service.GetModel(modelId: modelId);
+    }
         [TestMethod]
         public void Recognize_Success()
         {
@@ -152,6 +158,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             request.Received().WithBodyContent(Arg.Is<ByteArrayContent>(x => x.ReadAsStringAsync().Result.Equals(audioString)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Recognize_NoAudio()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        byte[] audio = null;
+        var result = service.Recognize(audio: audio, contentType: contentType, model: model, languageCustomizationId: languageCustomizationId, acousticCustomizationId: acousticCustomizationId, baseModelVersion: baseModelVersion, customizationWeight: customizationWeight, inactivityTimeout: inactivityTimeout, keywords: keywords, keywordsThreshold: keywordsThreshold, maxAlternatives: maxAlternatives, wordAlternativesThreshold: wordAlternativesThreshold, wordConfidence: wordConfidence, timestamps: timestamps, profanityFilter: profanityFilter, smartFormatting: smartFormatting, speakerLabels: speakerLabels, customizationId: customizationId, grammarName: grammarName, redaction: redaction, audioMetrics: audioMetrics);
+    }
         [TestMethod]
         public void RegisterCallback_Success()
         {
@@ -169,6 +182,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void RegisterCallback_NoCallbackUrl()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        string callbackUrl = null;
+        var result = service.RegisterCallback(callbackUrl: callbackUrl, userSecret: userSecret);
+    }
         [TestMethod]
         public void UnregisterCallback_Success()
         {
@@ -185,6 +205,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UnregisterCallback_NoCallbackUrl()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        string callbackUrl = null;
+        var result = service.UnregisterCallback(callbackUrl: callbackUrl);
+    }
         [TestMethod]
         public void CreateJob_Success()
         {
@@ -229,6 +256,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             request.Received().WithBodyContent(Arg.Is<ByteArrayContent>(x => x.ReadAsStringAsync().Result.Equals(audioString)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateJob_NoAudio()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        byte[] audio = null;
+        var result = service.CreateJob(audio: audio, contentType: contentType, model: model, callbackUrl: callbackUrl, events: events, userToken: userToken, resultsTtl: resultsTtl, languageCustomizationId: languageCustomizationId, acousticCustomizationId: acousticCustomizationId, baseModelVersion: baseModelVersion, customizationWeight: customizationWeight, inactivityTimeout: inactivityTimeout, keywords: keywords, keywordsThreshold: keywordsThreshold, maxAlternatives: maxAlternatives, wordAlternativesThreshold: wordAlternativesThreshold, wordConfidence: wordConfidence, timestamps: timestamps, profanityFilter: profanityFilter, smartFormatting: smartFormatting, speakerLabels: speakerLabels, customizationId: customizationId, grammarName: grammarName, redaction: redaction, processingMetrics: processingMetrics, processingMetricsInterval: processingMetricsInterval, audioMetrics: audioMetrics);
+    }
         [TestMethod]
         public void CheckJobs_Success()
         {
@@ -243,7 +277,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var result = service.CheckJobs();
 
         }
-
         [TestMethod]
         public void CheckJob_Success()
         {
@@ -261,6 +294,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/recognitions/{id}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CheckJob_NoId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var id = null;
+        var result = service.CheckJob(id: id);
+    }
         [TestMethod]
         public void DeleteJob_Success()
         {
@@ -278,6 +318,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/recognitions/{id}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteJob_NoId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var id = null;
+        var result = service.DeleteJob(id: id);
+    }
         [TestMethod]
         public void CreateLanguageModel_Success()
         {
@@ -315,7 +362,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var json = JsonConvert.SerializeObject(bodyObject);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListLanguageModels_Success()
         {
@@ -331,7 +377,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var result = service.ListLanguageModels(language: language);
 
         }
-
         [TestMethod]
         public void GetLanguageModel_Success()
         {
@@ -349,6 +394,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetLanguageModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetLanguageModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void DeleteLanguageModel_Success()
         {
@@ -366,6 +418,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteLanguageModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteLanguageModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void TrainLanguageModel_Success()
         {
@@ -385,6 +444,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/train");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void TrainLanguageModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.TrainLanguageModel(customizationId: customizationId, wordTypeToAdd: wordTypeToAdd, customizationWeight: customizationWeight);
+    }
         [TestMethod]
         public void ResetLanguageModel_Success()
         {
@@ -402,6 +468,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/reset");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ResetLanguageModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ResetLanguageModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void UpgradeLanguageModel_Success()
         {
@@ -419,6 +492,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/upgrade_model");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpgradeLanguageModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.UpgradeLanguageModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void ListCorpora_Success()
         {
@@ -436,6 +516,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/corpora");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListCorpora_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ListCorpora(customizationId: customizationId);
+    }
         [TestMethod]
         public void AddCorpus_Success()
         {
@@ -457,6 +544,29 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddCorpus_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.AddCorpus(customizationId: customizationId, corpusName: corpusName, corpusFile: corpusFile, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddCorpus_NoCorpusName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var corpusName = null;
+        var result = service.AddCorpus(customizationId: customizationId, corpusName: corpusName, corpusFile: corpusFile, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddCorpus_NoCorpusFile()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        System.IO.MemoryStream corpusFile = null;
+        var result = service.AddCorpus(customizationId: customizationId, corpusName: corpusName, corpusFile: corpusFile, allowOverwrite: allowOverwrite);
+    }
         [TestMethod]
         public void GetCorpus_Success()
         {
@@ -475,6 +585,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/corpora/{corpusName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCorpus_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetCorpus(customizationId: customizationId, corpusName: corpusName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCorpus_NoCorpusName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var corpusName = null;
+        var result = service.GetCorpus(customizationId: customizationId, corpusName: corpusName);
+    }
         [TestMethod]
         public void DeleteCorpus_Success()
         {
@@ -493,6 +618,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/corpora/{corpusName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCorpus_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteCorpus(customizationId: customizationId, corpusName: corpusName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteCorpus_NoCorpusName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var corpusName = null;
+        var result = service.DeleteCorpus(customizationId: customizationId, corpusName: corpusName);
+    }
         [TestMethod]
         public void ListWords_Success()
         {
@@ -512,6 +652,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/words");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListWords_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ListWords(customizationId: customizationId, wordType: wordType, sort: sort);
+    }
         [TestMethod]
         public void AddWords_Success()
         {
@@ -537,6 +684,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/words");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddWords_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.AddWords(customizationId: customizationId, words: words);
+    }
         [TestMethod]
         public void AddWord_Success()
         {
@@ -573,6 +727,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/words/{wordName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddWord_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.AddWord(customizationId: customizationId, wordName: wordName, word: word, soundsLike: soundsLike, displayAs: displayAs);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddWord_NoWordName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var wordName = null;
+        var result = service.AddWord(customizationId: customizationId, wordName: wordName, word: word, soundsLike: soundsLike, displayAs: displayAs);
+    }
         [TestMethod]
         public void GetWord_Success()
         {
@@ -591,6 +760,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/words/{wordName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetWord_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetWord(customizationId: customizationId, wordName: wordName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetWord_NoWordName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var wordName = null;
+        var result = service.GetWord(customizationId: customizationId, wordName: wordName);
+    }
         [TestMethod]
         public void DeleteWord_Success()
         {
@@ -609,6 +793,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/words/{wordName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteWord_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteWord(customizationId: customizationId, wordName: wordName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteWord_NoWordName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var wordName = null;
+        var result = service.DeleteWord(customizationId: customizationId, wordName: wordName);
+    }
         [TestMethod]
         public void ListGrammars_Success()
         {
@@ -626,6 +825,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/grammars");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListGrammars_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ListGrammars(customizationId: customizationId);
+    }
         [TestMethod]
         public void AddGrammar_Success()
         {
@@ -648,6 +854,37 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/grammars/{grammarName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddGrammar_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.AddGrammar(customizationId: customizationId, grammarName: grammarName, grammarFile: grammarFile, contentType: contentType, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddGrammar_NoGrammarName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var grammarName = null;
+        var result = service.AddGrammar(customizationId: customizationId, grammarName: grammarName, grammarFile: grammarFile, contentType: contentType, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddGrammar_NoGrammarFile()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        string grammarFile = null;
+        var result = service.AddGrammar(customizationId: customizationId, grammarName: grammarName, grammarFile: grammarFile, contentType: contentType, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddGrammar_NoContentType()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        string contentType = null;
+        var result = service.AddGrammar(customizationId: customizationId, grammarName: grammarName, grammarFile: grammarFile, contentType: contentType, allowOverwrite: allowOverwrite);
+    }
         [TestMethod]
         public void GetGrammar_Success()
         {
@@ -666,6 +903,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/grammars/{grammarName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetGrammar_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetGrammar(customizationId: customizationId, grammarName: grammarName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetGrammar_NoGrammarName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var grammarName = null;
+        var result = service.GetGrammar(customizationId: customizationId, grammarName: grammarName);
+    }
         [TestMethod]
         public void DeleteGrammar_Success()
         {
@@ -684,6 +936,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/customizations/{customizationId}/grammars/{grammarName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteGrammar_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteGrammar(customizationId: customizationId, grammarName: grammarName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteGrammar_NoGrammarName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var grammarName = null;
+        var result = service.DeleteGrammar(customizationId: customizationId, grammarName: grammarName);
+    }
         [TestMethod]
         public void CreateAcousticModel_Success()
         {
@@ -716,7 +983,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var json = JsonConvert.SerializeObject(bodyObject);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListAcousticModels_Success()
         {
@@ -732,7 +998,6 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             var result = service.ListAcousticModels(language: language);
 
         }
-
         [TestMethod]
         public void GetAcousticModel_Success()
         {
@@ -750,6 +1015,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAcousticModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetAcousticModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void DeleteAcousticModel_Success()
         {
@@ -767,6 +1039,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteAcousticModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteAcousticModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void TrainAcousticModel_Success()
         {
@@ -785,6 +1064,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/train");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void TrainAcousticModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.TrainAcousticModel(customizationId: customizationId, customLanguageModelId: customLanguageModelId);
+    }
         [TestMethod]
         public void ResetAcousticModel_Success()
         {
@@ -802,6 +1088,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/reset");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ResetAcousticModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ResetAcousticModel(customizationId: customizationId);
+    }
         [TestMethod]
         public void UpgradeAcousticModel_Success()
         {
@@ -821,6 +1114,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/upgrade_model");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpgradeAcousticModel_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.UpgradeAcousticModel(customizationId: customizationId, customLanguageModelId: customLanguageModelId, force: force);
+    }
         [TestMethod]
         public void ListAudio_Success()
         {
@@ -838,6 +1138,13 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/audio");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ListAudio_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.ListAudio(customizationId: customizationId);
+    }
         [TestMethod]
         public void AddAudio_Success()
         {
@@ -862,6 +1169,29 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/audio/{audioName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddAudio_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.AddAudio(customizationId: customizationId, audioName: audioName, audioResource: audioResource, contentType: contentType, containedContentType: containedContentType, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddAudio_NoAudioName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var audioName = null;
+        var result = service.AddAudio(customizationId: customizationId, audioName: audioName, audioResource: audioResource, contentType: contentType, containedContentType: containedContentType, allowOverwrite: allowOverwrite);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void AddAudio_NoAudioResource()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        byte[] audioResource = null;
+        var result = service.AddAudio(customizationId: customizationId, audioName: audioName, audioResource: audioResource, contentType: contentType, containedContentType: containedContentType, allowOverwrite: allowOverwrite);
+    }
         [TestMethod]
         public void GetAudio_Success()
         {
@@ -880,6 +1210,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/audio/{audioName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAudio_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.GetAudio(customizationId: customizationId, audioName: audioName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetAudio_NoAudioName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var audioName = null;
+        var result = service.GetAudio(customizationId: customizationId, audioName: audioName);
+    }
         [TestMethod]
         public void DeleteAudio_Success()
         {
@@ -898,6 +1243,21 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/acoustic_customizations/{customizationId}/audio/{audioName}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteAudio_NoCustomizationId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var customizationId = null;
+        var result = service.DeleteAudio(customizationId: customizationId, audioName: audioName);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteAudio_NoAudioName()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        var audioName = null;
+        var result = service.DeleteAudio(customizationId: customizationId, audioName: audioName);
+    }
         [TestMethod]
         public void DeleteUserData_Success()
         {
@@ -914,5 +1274,12 @@ namespace IBM.Watson.SpeechToText.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteUserData_NoCustomerId()
+    {
+        SpeechToTextService service = new SpeechToTextService(new NoAuthAuthenticator());
+        string customerId = null;
+        var result = service.DeleteUserData(customerId: customerId);
+    }
     }
 }

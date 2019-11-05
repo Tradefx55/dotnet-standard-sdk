@@ -110,6 +110,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ConvertToHtml_NoFile()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file = null;
+        var result = service.ConvertToHtml(file: file, fileContentType: fileContentType, model: model);
+    }
         [TestMethod]
         public void ClassifyElements_Success()
         {
@@ -132,6 +139,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ClassifyElements_NoFile()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file = null;
+        var result = service.ClassifyElements(file: file, fileContentType: fileContentType, model: model);
+    }
         [TestMethod]
         public void ExtractTables_Success()
         {
@@ -154,6 +168,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ExtractTables_NoFile()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file = null;
+        var result = service.ExtractTables(file: file, fileContentType: fileContentType, model: model);
+    }
         [TestMethod]
         public void CompareDocuments_Success()
         {
@@ -180,6 +201,21 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CompareDocuments_NoFile1()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file1 = null;
+        var result = service.CompareDocuments(file1: file1, file2: file2, file1ContentType: file1ContentType, file2ContentType: file2ContentType, file1Label: file1Label, file2Label: file2Label, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CompareDocuments_NoFile2()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file2 = null;
+        var result = service.CompareDocuments(file1: file1, file2: file2, file1ContentType: file1ContentType, file2ContentType: file2ContentType, file1Label: file1Label, file2Label: file2Label, model: model);
+    }
         [TestMethod]
         public void AddFeedback_Success()
         {
@@ -215,7 +251,6 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListFeedback_Success()
         {
@@ -249,7 +284,6 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetFeedback_Success()
         {
@@ -271,6 +305,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/feedback/{feedbackId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetFeedback_NoFeedbackId()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        var feedbackId = null;
+        var result = service.GetFeedback(feedbackId: feedbackId, model: model);
+    }
         [TestMethod]
         public void DeleteFeedback_Success()
         {
@@ -292,6 +333,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v1/feedback/{feedbackId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteFeedback_NoFeedbackId()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        var feedbackId = null;
+        var result = service.DeleteFeedback(feedbackId: feedbackId, model: model);
+    }
         [TestMethod]
         public void CreateBatch_Success()
         {
@@ -319,6 +367,61 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoFunction()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string function = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoInputCredentialsFile()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream inputCredentialsFile = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoInputBucketLocation()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string inputBucketLocation = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoInputBucketName()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string inputBucketName = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoOutputCredentialsFile()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream outputCredentialsFile = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoOutputBucketLocation()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string outputBucketLocation = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateBatch_NoOutputBucketName()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string outputBucketName = null;
+        var result = service.CreateBatch(function: function, inputCredentialsFile: inputCredentialsFile, inputBucketLocation: inputBucketLocation, inputBucketName: inputBucketName, outputCredentialsFile: outputCredentialsFile, outputBucketLocation: outputBucketLocation, outputBucketName: outputBucketName, model: model);
+    }
         [TestMethod]
         public void ListBatches_Success()
         {
@@ -336,7 +439,6 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetBatch_Success()
         {
@@ -357,6 +459,13 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v1/batches/{batchId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetBatch_NoBatchId()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        var batchId = null;
+        var result = service.GetBatch(batchId: batchId);
+    }
         [TestMethod]
         public void UpdateBatch_Success()
         {
@@ -379,5 +488,20 @@ namespace IBM.Watson.CompareComply.v1.UnitTests
             client.Received().PutAsync($"{service.ServiceUrl}/v1/batches/{batchId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateBatch_NoBatchId()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        var batchId = null;
+        var result = service.UpdateBatch(batchId: batchId, action: action, model: model);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateBatch_NoAction()
+    {
+        CompareComplyService service = new CompareComplyService("versionDate", new NoAuthAuthenticator());
+        string action = null;
+        var result = service.UpdateBatch(batchId: batchId, action: action, model: model);
+    }
     }
 }

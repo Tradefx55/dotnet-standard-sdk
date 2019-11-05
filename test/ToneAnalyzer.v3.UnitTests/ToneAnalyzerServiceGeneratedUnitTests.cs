@@ -115,6 +115,13 @@ namespace IBM.Watson.ToneAnalyzer.v3.UnitTests
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Tone_NoToneInput()
+    {
+        ToneAnalyzerService service = new ToneAnalyzerService("versionDate", new NoAuthAuthenticator());
+        ToneInput toneInput = null;
+        var result = service.Tone(toneInput: toneInput, contentType: contentType, sentences: sentences, tones: tones, contentLanguage: contentLanguage, acceptLanguage: acceptLanguage);
+    }
         [TestMethod]
         public void ToneChat_Success()
         {
@@ -142,6 +149,5 @@ namespace IBM.Watson.ToneAnalyzer.v3.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
     }
 }

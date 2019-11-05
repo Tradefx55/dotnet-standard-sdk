@@ -108,6 +108,13 @@ namespace IBM.Watson.Assistant.v2.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v2/assistants/{assistantId}/sessions");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateSession_NoAssistantId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var assistantId = null;
+        var result = service.CreateSession(assistantId: assistantId);
+    }
         [TestMethod]
         public void DeleteSession_Success()
         {
@@ -129,6 +136,21 @@ namespace IBM.Watson.Assistant.v2.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v2/assistants/{assistantId}/sessions/{sessionId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSession_NoAssistantId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var assistantId = null;
+        var result = service.DeleteSession(assistantId: assistantId, sessionId: sessionId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteSession_NoSessionId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var sessionId = null;
+        var result = service.DeleteSession(assistantId: assistantId, sessionId: sessionId);
+    }
         [TestMethod]
         public void Message_Success()
         {
@@ -163,5 +185,20 @@ namespace IBM.Watson.Assistant.v2.UnitTests
             client.Received().PostAsync($"{service.ServiceUrl}/v2/assistants/{assistantId}/sessions/{sessionId}/message");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Message_NoAssistantId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var assistantId = null;
+        var result = service.Message(assistantId: assistantId, sessionId: sessionId, input: input, context: context);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Message_NoSessionId()
+    {
+        AssistantService service = new AssistantService("versionDate", new NoAuthAuthenticator());
+        var sessionId = null;
+        var result = service.Message(assistantId: assistantId, sessionId: sessionId, input: input, context: context);
+    }
     }
 }

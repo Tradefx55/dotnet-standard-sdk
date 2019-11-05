@@ -128,7 +128,6 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             request.Received().WithArgument("version", versionDate);
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
-
         [TestMethod]
         public void ListIdentifiableLanguages_Success()
         {
@@ -146,7 +145,6 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void Identify_Success()
         {
@@ -167,6 +165,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(text)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Identify_NoText()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        string text = null;
+        var result = service.Identify(text: text);
+    }
         [TestMethod]
         public void ListModels_Success()
         {
@@ -187,7 +192,6 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void CreateModel_Success()
         {
@@ -211,6 +215,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateModel_NoBaseModelId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        string baseModelId = null;
+        var result = service.CreateModel(baseModelId: baseModelId, forcedGlossary: forcedGlossary, parallelCorpus: parallelCorpus, name: name);
+    }
         [TestMethod]
         public void DeleteModel_Success()
         {
@@ -231,6 +242,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v3/models/{modelId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteModel_NoModelId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        var modelId = null;
+        var result = service.DeleteModel(modelId: modelId);
+    }
         [TestMethod]
         public void GetModel_Success()
         {
@@ -251,6 +269,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v3/models/{modelId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetModel_NoModelId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        var modelId = null;
+        var result = service.GetModel(modelId: modelId);
+    }
         [TestMethod]
         public void ListDocuments_Success()
         {
@@ -268,7 +293,6 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void TranslateDocument_Success()
         {
@@ -295,6 +319,21 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void TranslateDocument_NoFile()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        System.IO.MemoryStream file = null;
+        var result = service.TranslateDocument(file: file, filename: filename, fileContentType: fileContentType, modelId: modelId, source: source, target: target, documentId: documentId);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void TranslateDocument_NoFilename()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        string filename = null;
+        var result = service.TranslateDocument(file: file, filename: filename, fileContentType: fileContentType, modelId: modelId, source: source, target: target, documentId: documentId);
+    }
         [TestMethod]
         public void GetDocumentStatus_Success()
         {
@@ -315,6 +354,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v3/documents/{documentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetDocumentStatus_NoDocumentId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.GetDocumentStatus(documentId: documentId);
+    }
         [TestMethod]
         public void DeleteDocument_Success()
         {
@@ -335,6 +381,13 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v3/documents/{documentId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteDocument_NoDocumentId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.DeleteDocument(documentId: documentId);
+    }
         [TestMethod]
         public void GetTranslatedDocument_Success()
         {
@@ -356,5 +409,12 @@ namespace IBM.Watson.LanguageTranslator.v3.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v3/documents/{documentId}/translated_document");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetTranslatedDocument_NoDocumentId()
+    {
+        LanguageTranslatorService service = new LanguageTranslatorService("versionDate", new NoAuthAuthenticator());
+        var documentId = null;
+        var result = service.GetTranslatedDocument(documentId: documentId, accept: accept);
+    }
     }
 }

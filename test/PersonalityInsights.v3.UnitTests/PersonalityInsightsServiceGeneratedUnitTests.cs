@@ -116,6 +116,13 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void Profile_NoContent()
+    {
+        PersonalityInsightsService service = new PersonalityInsightsService("versionDate", new NoAuthAuthenticator());
+        Content content = null;
+        var result = service.Profile(content: content, contentType: contentType, contentLanguage: contentLanguage, acceptLanguage: acceptLanguage, rawScores: rawScores, csvHeaders: csvHeaders, consumptionPreferences: consumptionPreferences);
+    }
         [TestMethod]
         public void ProfileAsCsv_Success()
         {
@@ -144,5 +151,12 @@ namespace IBM.Watson.PersonalityInsights.v3.UnitTests
             request.Received().WithBodyContent(Arg.Is<StringContent>(x => x.ReadAsStringAsync().Result.Equals(json)));
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void ProfileAsCsv_NoContent()
+    {
+        PersonalityInsightsService service = new PersonalityInsightsService("versionDate", new NoAuthAuthenticator());
+        Content content = null;
+        var result = service.ProfileAsCsv(content: content, contentType: contentType, contentLanguage: contentLanguage, acceptLanguage: acceptLanguage, rawScores: rawScores, csvHeaders: csvHeaders, consumptionPreferences: consumptionPreferences);
+    }
     }
 }

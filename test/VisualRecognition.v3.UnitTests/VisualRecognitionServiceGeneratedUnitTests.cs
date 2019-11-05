@@ -114,7 +114,6 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             request.Received().WithArgument("version", versionDate);
 
         }
-
         [TestMethod]
         public void CreateClassifier_Success()
         {
@@ -139,6 +138,21 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateClassifier_NoName()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        string name = null;
+        var result = service.CreateClassifier(name: name, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
+    }
+
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void CreateClassifier_NoPositiveExamples()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        Dictionary<string, System.IO.MemoryStream> positiveExamples = null;
+        var result = service.CreateClassifier(name: name, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
+    }
         [TestMethod]
         public void ListClassifiers_Success()
         {
@@ -157,7 +171,6 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
 
             request.Received().WithArgument("version", versionDate);
         }
-
         [TestMethod]
         public void GetClassifier_Success()
         {
@@ -178,6 +191,13 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetClassifier_NoClassifierId()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.GetClassifier(classifierId: classifierId);
+    }
         [TestMethod]
         public void UpdateClassifier_Success()
         {
@@ -203,6 +223,13 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
 
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void UpdateClassifier_NoClassifierId()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.UpdateClassifier(classifierId: classifierId, positiveExamples: positiveExamples, negativeExamples: negativeExamples, negativeExamplesFilename: negativeExamplesFilename);
+    }
         [TestMethod]
         public void DeleteClassifier_Success()
         {
@@ -223,6 +250,13 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             client.Received().DeleteAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteClassifier_NoClassifierId()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.DeleteClassifier(classifierId: classifierId);
+    }
         [TestMethod]
         public void GetCoreMlModel_Success()
         {
@@ -243,6 +277,13 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             client.Received().GetAsync($"{service.ServiceUrl}/v3/classifiers/{classifierId}/core_ml_model");
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void GetCoreMlModel_NoClassifierId()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        var classifierId = null;
+        var result = service.GetCoreMlModel(classifierId: classifierId);
+    }
         [TestMethod]
         public void DeleteUserData_Success()
         {
@@ -262,5 +303,12 @@ namespace IBM.Watson.VisualRecognition.v3.UnitTests
             request.Received().WithArgument("version", versionDate);
         }
 
+    [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+    public void DeleteUserData_NoCustomerId()
+    {
+        VisualRecognitionService service = new VisualRecognitionService("versionDate", new NoAuthAuthenticator());
+        string customerId = null;
+        var result = service.DeleteUserData(customerId: customerId);
+    }
     }
 }
